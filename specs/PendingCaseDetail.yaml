@@ -1,0 +1,386 @@
+openapi: 3.0.0
+info:
+  title: Insurance Policy API
+  description: API for managing insurance policy data including policy details, transmission, agents, parties, funding, and more.
+  version: 1.0.0
+
+paths:
+  /policy:
+    post:
+      summary: Create or update an insurance policy
+      description: Submit or update the details of an insurance policy, including transmission, agents, and funding information.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                version:
+                  type: string
+                  example: "IRI Proposed Revision"
+                transmission:
+                  type: object
+                  properties:
+                    type:
+                      type: string
+                      enum: [dtcc]
+                    senderFirmId:
+                      type: string
+                    receiverFirmId:
+                      type: string
+                    associatedFirmId:
+                      type: string
+                policyNumber:
+                  type: string
+                appEntry:
+                  type: object
+                  properties:
+                    platform:
+                      type: string
+                      enum: [carrier, firelight, an4, affirm, other]
+                    electronicFlag:
+                      type: boolean
+                    id:
+                      type: string
+                product:
+                  type: object
+                  properties:
+                    cusip:
+                      type: string
+                    carrierName:
+                      type: string
+                    carrierCode:
+                      type: string
+                status:
+                  type: string
+                  enum: [received, inProgress, complete, canceled]
+                actionNeededFlag:
+                  type: boolean
+                signedDate:
+                  type: string
+                  format: date
+                receivedDate:
+                  type: string
+                  format: date
+                issuedDate:
+                  type: string
+                  format: date
+                effectiveDate:
+                  type: string
+                  format: date
+                rateEffectiveDate:
+                  type: string
+                  format: date
+                fundsHeldUntilDate:
+                  type: string
+                  format: date
+                cancellationDetails:
+                  type: object
+                  properties:
+                    canceledBy:
+                      type: string
+                      enum: [advisor, carrier, client]
+                    cancellationDate:
+                      type: string
+                      format: date
+                    cancellationReason:
+                      type: string
+                agents:
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      type:
+                        type: string
+                        enum: [individual, entity]
+                      firstName:
+                        type: string
+                      middleName:
+                        type: string
+                      lastName:
+                        type: string
+                      fullName:
+                        type: string
+                      npn:
+                        type: string
+                      crd:
+                        type: string
+                      taxId:
+                        type: string
+                      relationships:
+                        type: array
+                        items:
+                          type: object
+                          properties:
+                            type:
+                              type: string
+                              enum:
+                                - primaryAgent
+                                - secondaryAgent
+                                - additionalAgent
+                                - brokerageGeneralAgency
+                                - investmentAdvisorRepresentative
+                                - registeredInvestmentAdvisoryFirm
+                                - independentMarketingOrganization
+                parties:
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      type:
+                        type: string
+                        enum: [individual, entity]
+                      firstName:
+                        type: string
+                      middleName:
+                        type: string
+                      lastName:
+                        type: string
+                      fullName:
+                        type: string
+                      taxId:
+                        type: string
+                      relationships:
+                        type: array
+                        items:
+                          type: object
+                          properties:
+                            type:
+                              type: string
+                              enum:
+                                - owner
+                                - jointOwner
+                                - annuitant
+                                - jointAnnuitant
+                                - primaryBeneficiary
+                                - contingentBeneficiary
+                delivery:
+                  type: object
+                  properties:
+                    sentDate:
+                      type: string
+                      format: date
+                    method:
+                      type: string
+                      enum: [fedex, ups, electronicDelivery, handDelivery, usps, other]
+                    trackingNumber:
+                      type: string
+                caseManager:
+                  type: object
+                  properties:
+                    fullName:
+                      type: string
+                    phoneNumber:
+                      type: string
+                    emailAddress:
+                      type: string
+                    websiteURL:
+                      type: string
+                licensingAppointmentTraining:
+                  type: object
+                  properties:
+                    status:
+                      type: string
+                      enum: [awaitingReview, inProgress, complete]
+                    startDate:
+                      type: string
+                      format: date
+                    endDate:
+                      type: string
+                      format: date
+                    issues:
+                      type: array
+                      items:
+                        type: object
+                        properties:
+                          type:
+                            type: string
+                            enum:
+                              - trainingIncompleteMissing
+                              - trainingExpired
+                              - agentNotAppointedForSale
+                              - jitAppointmentInProgress
+                              - agentNotLicensed
+                              - other
+                          note:
+                            type: string
+                          actionNeededFlag:
+                            type: boolean
+                          responsibleParty:
+                            type: object
+                            properties:
+                              npn:
+                                type: string
+                              crd:
+                                type: string
+                              taxId:
+                                type: string
+                          resolvedFlag:
+                            type: boolean
+                documentReview:
+                  type: object
+                  properties:
+                    startDate:
+                      type: string
+                      format: date
+                    endDate:
+                      type: string
+                      format: date
+                    status:
+                      type: string
+                      enum: [awaitingReview, inProgress, complete]
+                    issues:
+                      type: array
+                      items:
+                        type: object
+                        properties:
+                          reason:
+                            type: string
+                            enum:
+                              - applicationIssue
+                              - contactCarrier
+                              - incompleteForm
+                              - missingForm
+                              - missingSignature
+                              - needClarity
+                              - other
+                          actionNeededFlag:
+                            type: boolean
+                          fileName:
+                            type: string
+                          formNumber:
+                            type: string
+                          content:
+                            type: string
+                          dueDate:
+                            type: string
+                            format: date
+                          note:
+                            type: string
+                          resolvedFlag:
+                            type: boolean
+                suitability:
+                  type: object
+                  properties:
+                    startDate:
+                      type: string
+                      format: date
+                    endDate:
+                      type: string
+                      format: date
+                    status:
+                      type: string
+                      enum: [awaitingReview, inProgress, complete, notApplicable]
+                    details:
+                      type: string
+                      enum:
+                        - moreInformationNeeded
+                        - notSuitableForClient
+                        - other
+                    finalDecision:
+                      type: string
+                      enum: [approved, declined]
+                    note:
+                      type: string
+                    dueDate:
+                      type: string
+                      format: date
+                funding:
+                  type: object
+                  properties:
+                    startDate:
+                      type: string
+                      format: date
+                    endDate:
+                      type: string
+                      format: date
+                    status:
+                      type: string
+                      enum: [awaitingReview, inProgress, complete]
+                    sources:
+                      type: array
+                      items:
+                        type: object
+                        properties:
+                          method:
+                            type: string
+                            enum:
+                              - anotherPolicy
+                              - check
+                              - clearinghouse
+                              - creditCard
+                              - debitCard
+                              - digitalPayment
+                              - electronicFundTransfer
+                              - payrollDeduction
+                              - wireTransfer
+                          type:
+                            type: string
+                            enum:
+                              - contribution
+                              - directRollover
+                              - employeeContribution
+                              - employerContribution
+                              - full1035Exchange
+                              - indirectRollover
+                              - nonQualifiedTransferOfAssets
+                              - partial1035Exchange
+                              - qualifiedTransfer
+                          actionNeededFlag:
+                            type: boolean
+                          anticipatedAmount:
+                            type: number
+                            format: float
+                          receivedAmount:
+                            type: number
+                            format: float
+                          receivedDate:
+                            type: string
+                            format: date
+                          status:
+                            type: string
+                            enum: [inProgress, complete]
+                          reason:
+                            type: string
+                            enum:
+                              - awaitingFundsFromCedingCompany
+                              - contactTheCarrier
+                              - fundingDiscrepancy
+                              - nigoAtCedingCarrier
+                              - noFundsReceivedCash
+                              - pendingReg60
+                              - other
+                          effectiveDate:
+                            type: string
+                            format: date
+                          cedingCompany:
+                            type: object
+                            properties:
+                              name:
+                                type: string
+                              accountNumber:
+                                type: string
+                              startDate:
+                                type: string
+                                format: date
+                              referenceNumber:
+                                type: string
+                              nextActivityDate:
+                                type: string
+                                format: date
+                              note:
+                                type: string
+                          note:
+                            type: string
+      responses:
+        '200':
+          description: Policy successfully created or updated
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: "Policy successfully created or updated"
