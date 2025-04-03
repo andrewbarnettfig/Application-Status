@@ -1,0 +1,147 @@
+{
+    "version": "IRI Proposed Revision",
+    "transmission":{
+        "type": "dtcc",
+        "senderFirmId": "string",
+        "receiverFirmId": "string",
+        "associatedFirmId": "string"
+    },
+    "policyNumber": "string",
+    "appEntry": {
+        "platform": "{carrier, firelight, an4, affirm, other}",
+        "electronicFlag": true,
+        "id": "string"
+    },
+    "product": {
+        "cusip": "string",
+        "carrierName": "string",
+        "carrierCode": "string"
+    },
+    "status": "{received, inProgress, complete, canceled}",
+    "actionNeededFlag": true,
+    "signedDate": "2023-10-19",
+    "receivedDate": "2023-10-19",
+    "issuedDate": "2023-10-19",
+    "effectiveDate": "2023-10-19",
+    "rateEffectiveDate": "2023-10-19",
+    "fundsHeldUntilDate": "2023-10-19",
+    "cancellationDetails": {
+        "canceledBy": "{advisor, carrier, client}",
+        "cancellationDate": "2023-10-19",
+        "cancellationReason": "string"
+    },
+    "agents": [
+        {
+            "type": "{individual, entity}",
+            "firstName": "string",
+            "middleName": "string",
+            "lastName": "string",
+            "fullName": "string",
+            "npn": "string",
+            "crd": "string",
+            "taxId": "string",
+            "relationships": [
+                {
+                    "type": "{primaryAgent, secondaryAgent, additionalAgent, brokerageGeneralAgency, investmentAdvisorRepresentative, registeredInvestmentAdvisoryFirm, independentMarketingOrganization}"
+                }
+            ]
+        }
+    ],
+    "parties": [
+        {
+            "type": "{individual, entity}",
+            "firstName": "string",
+            "middleName": "string",
+            "lastName": "string",
+            "fullName": "string",
+            "taxId": "string",
+            "relationships": [
+                {
+                    "type": "{owner, jointOwner, annuitant, jointAnnuitant, primaryBeneficiary, contingentBeneficiary}"
+                }
+            ]
+        }
+    ],
+    "delivery": {
+        "sentDate": "2023-10-19",
+        "method": "{fedex, ups, electronicDelivery, handDelivery, usps, other}",
+        "trackingNumber": "string"
+    },
+    "caseManager": {
+        "fullName": "case manager name",
+        "phoneNumber": "+1-234-567-8900",
+        "emailAddress": "email@domain.com",
+        "websiteURL": "http://www.insurer.com"
+    },
+    "licensingAppointmentTraining": {
+        "status": "awaitingReview, inProgress, complete",
+        "startDate": "2023-10-19",
+        "endDate": "2023-10-19",
+        "issues": [
+            {
+                "type": "{trainingIncompleteMissing, trainingExpired, agentNotAppointedForSale, jitAppointmentInProgress, agentNotLicensed, other}",
+                "note": "string",
+                "actionNeededFlag": true,
+                "responsibleParty": {
+                    "npn": "string",
+                    "crd": "string",
+                    "taxId": "string"
+                },
+                "resolvedFlag": true
+            }
+        ]
+    },
+    "documentReview": {
+        "startDate": "2023-10-19",
+        "endDate": "2023-10-19",
+        "status": "awaitingReview, inProgress, complete",
+        "issues": [
+            {
+                "reason": "{applicationIssue, contactCarrier, incompleteForm, missingForm, missingSignature, needClarity, other}",
+                "actionNeededFlag": true,
+                "fileName": "string",
+                "formNumber": "string",
+                "content": "base64",
+                "dueDate": "2023-10-19",
+                "note": "string",
+                "resolvedFlag": true
+            }
+        ]
+    },
+    "suitability": {
+        "startDate": "2023-10-19",
+        "endDate": "2023-10-19",
+        "status": "awaitingReview, inProgress, complete, notApplicable",
+        "details": "moreInformationNeeded, notSuitableForClient, other",
+        "finalDecision": "approved, declined",
+        "note": "string",
+        "dueDate": "2023-10-19"
+    },
+    "funding": {
+        "startDate": "2023-10-19",
+        "endDate": "2023-10-19",
+        "status": "awaitingReview, inProgress, complete",
+        "sources": [
+            {
+                "method": "{anotherPolicy, check, clearinghouse, creditCard, debitCard, digitalPayment, electronicFundTransfer, payrollDeduction, wireTransfer}",
+                "type": "{contribution, directRollover, employeeContribution, employerContribution, full1035Exchange, indirectRollover, nonQualifiedTransferOfAssets, partial1035Exchange, qualifiedTransfer}",
+                "actionNeededFlag": true,
+                "anticipatedAmount": 154687.93,
+                "receivedAmount": 154690.93,
+                "receivedDate": "2023-10-19",
+                "status": "inProgress, complete",
+                "reason": "{awaitingFundsFromCedingCompany,contactTheCarrier,fundingDiscrepancy,nigoAtCedingCarrier,noFundsReceivedCash,pendingReg60,other}",
+                "effectiveDate": "2023-10-19",
+                "cedingCompany": {
+                    "name": "string",
+                    "accountNumber": "string",
+                    "startDate": "2023-10-19",
+                    "referenceNumber": "string",
+                    "nextActivityDate": "2023-10-19",
+                    "note": "string"
+                },
+                "note": "string"
+            }
+        ]
+    }
+}
