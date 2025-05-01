@@ -9,16 +9,17 @@ info:
 
 paths:
   /v1/applications/{applicationId}/activity-status:
+    parameters:
+          - name: applicationId
+            in: path
+            required: true
+            schema:
+              type: string
     get:
       operationId: getActivityStatusByApplicationId
       summary: Retrieve activity status of an application
       description: Retrieve all activity related to the status details of an application.
-      parameters:
-        - name: applicationId
-          in: path
-          required: true
-          schema:
-            type: string
+      
       responses:
         "200":
           description: Application activity status successfully retrieved
@@ -27,16 +28,17 @@ paths:
               schema:
                 $ref: "#/components/schemas/ActivityStatusDetail"
   /v1/policies/{policyNumber}/activity-status:
+    parameters:
+          - name: policyNumber
+            in: path
+            required: true
+            schema:
+              type: string
     get:
       operationId: getActivityStatusByPolicyNumber
       summary: Retrieve activity status of a policy
       description: Retrieve all activity related to the status details of a policy.
-      parameters:
-        - name: policyNumber
-          in: path
-          required: true
-          schema:
-            type: string
+      
       responses:
         "200":
           description: Policy activity status successfully retrieved
