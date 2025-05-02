@@ -60,10 +60,6 @@ components:
           type: string
         lastName:
           type: string
-        npn:
-          type: string
-        crdNumber:
-          type: string
         taxId:
           type: string
     IndividualProducer:
@@ -71,6 +67,10 @@ components:
         - $ref: "#/components/schemas/IndividualIdentity"
         - type: object
           properties:
+            npn:
+              type: string
+            crdNumber:
+              type: string
             relationships:
               type: array
               items:
@@ -81,6 +81,7 @@ components:
                   - additionalAgent
                   - investmentAdvisorRepresentative
     IndividualParty:
+      type: object
       allOf:
         - $ref: "#/components/schemas/IndividualIdentity"
         - $ref: "#/components/schemas/PartyRelationship"
@@ -92,17 +93,18 @@ components:
           const: entity
         name:
           type: string
-        npn:
-          type: string
-        crdNumber:
-          type: string
         taxId:
           type: string
     EntityProducer:
+      type: object
       allOf:
         - $ref: "#/components/schemas/EntityIdentity"
         - type: object
           properties:
+            npn:
+              type: string
+            crdNumber:
+              type: string
             relationships:
               type: array
               items:
@@ -112,6 +114,7 @@ components:
                   - registeredInvestmentAdvisoryFirm
                   - independentMarketingOrganization
     EntityParty:
+      type: object
       allOf:
         - $ref: "#/components/schemas/EntityIdentity"
         - $ref: "#/components/schemas/PartyRelationship"
