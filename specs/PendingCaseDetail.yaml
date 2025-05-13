@@ -35,6 +35,26 @@ paths:
             schema:
               type: string
     get:
+      operationId: getActivityStatusSummaryByPolicyNumber
+      summary: Retrieve a summary of activity status of a policy
+      description: Retrieve summary activity related to the status details of a policy.
+      
+      responses:
+        "200":
+          description: Policy activity status successfully retrieved
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ActivityStatusDetail"
+
+  /v1/policies/{policyNumber}/activity-status/full:
+    parameters:
+          - name: policyNumber
+            in: path
+            required: true
+            schema:
+              type: string
+    get:
       operationId: getActivityStatusByPolicyNumber
       summary: Retrieve activity status of a policy
       description: Retrieve all activity related to the status details of a policy.
@@ -46,6 +66,87 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/ActivityStatusDetail"
+
+  /v1/policies/{policyNumber}/activity-status/funding:
+    parameters:
+          - name: policyNumber
+            in: path
+            required: true
+            schema:
+              type: string
+    get:
+      operationId: getFundingStatusByPolicyNumber
+      summary: Retrieve funding activity status of a policy
+      description: Retrieve all funding activity related to the status details of a policy.
+      
+      responses:
+        "200":
+          description: Policy funding activity status successfully retrieved
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Funding"
+
+  /v1/policies/{policyNumber}/activity-status/documentReview:
+    parameters:
+          - name: policyNumber
+            in: path
+            required: true
+            schema:
+              type: string
+    get:
+      operationId: getDocumentReviewStatusByPolicyNumber
+      summary: Retrieve funding activity status of a policy
+      description: Retrieve all document review activity related to the status details of a policy.
+      
+      responses:
+        "200":
+          description: Document rewview information successfully retrieved
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/DocumentReview"
+
+  /v1/policies/{policyNumber}/activity-status/suitability:
+    parameters:
+          - name: policyNumber
+            in: path
+            required: true
+            schema:
+              type: string
+    get:
+      operationId: getSuitabilityInformationByPolicyNumber
+      summary: Retrieve suitablilty status of a policy
+      description: Retrieve the suitability iinformation for a policy.
+      
+      responses:
+        "200":
+          description: Suitability information successfully retrieved
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Suitability"
+
+  /v1/policies/{policyNumber}/activity-status/can-sell-validation:
+    parameters:
+          - name: policyNumber
+            in: path
+            required: true
+            schema:
+              type: string
+    get:
+      operationId: getCanSellValidationByPolicyNumber
+      summary: Retrieve suitablilty status of a policy
+      description: Retrieve the can sell validation for a policy.
+      
+      responses:
+        "200":
+          description: Can sell validation information successfully retrieved
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/CanSellValidation"
+
 components:
   schemas:
     IndividualIdentity:
@@ -129,99 +230,7 @@ components:
           - jointAnnuitant
           - primaryBeneficiary
           - contingentBeneficiary
-    ActivityStatusDetail:
-      description: Defines the schema for Activity Status Detail
-      type: object
-      properties:
-        correlationId:
-          type: string
-        policyNumber:
-          type: string
-        applicationOrigin:
-          type: object
-          properties:
-            platform:
-              type: string
-            isElectronic:
-              type: boolean
-            id:
-              type: string
-        cusip:
-          type: string
-        status:
-          type: string
-          enum: [received, inProgress, completed, cancelled]
-        isActionNeeded:
-          type: boolean
-        signedDate:
-          type: string
-          format: date
-        receivedDate:
-          type: string
-          format: date
-        issuedDate:
-          type: string
-          format: date
-        effectiveDate:
-          type: string
-          format: date
-        rateEffectiveDate:
-          type: string
-          format: date
-        fundsHeldUntilDate:
-          type: string
-          format: date
-        cancellation:
-          type: object
-          properties:
-            initiator:
-              type: string
-              enum: [advisor, carrier, client]
-            cancelledDate:
-              type: string
-              format: date
-            reason:
-              type: string
-        producers:
-          type: array
-          items:
-            anyOf:
-              - $ref: "#/components/schemas/IndividualProducer"
-              - $ref: "#/components/schemas/EntityProducer"
-        parties:
-          type: array
-          items:
-            anyOf:
-              - $ref: "#/components/schemas/IndividualParty"
-              - $ref: "#/components/schemas/EntityParty"
-        delivery:
-          type: object
-          properties:
-            sentDate:
-              type: string
-              format: date
-            method:
-              type: string
-              enum:
-                - fedex
-                - ups
-                - electronicDelivery
-                - handDelivery
-                - usps
-            trackingNumber:
-              type: string
-        caseManager:
-          type: object
-          properties:
-            fullName:
-              type: string
-            phoneNumber:
-              type: string
-            emailAddress:
-              type: string
-            websiteURL:
-              type: string
-        canSellValidation:
+    CanSellValidation:
           type: object
           properties:
             status:
@@ -262,7 +271,32 @@ components:
                         type: string
                       taxId:
                         type: string
-        documentReview:
+    Suitability:
+          type: object
+          properties:
+            status:
+              type: string
+              enum: [awaitingReview, inProgress, completed, notApplicable]
+            isActionNeeded:
+              type: boolean
+            startDate:
+              type: string
+              format: date
+            endDate:
+              type: string
+              format: date
+            reason:
+              type: string
+              enum:
+                - moreInformationNeeded
+                - notSuitableForClient
+                - other
+            note:
+              type: string
+            dueDate:
+              type: string
+              format: date
+    DocumentReview:
           type: object
           properties:
             status:
@@ -302,32 +336,7 @@ components:
                     format: date
                   note:
                     type: string
-        suitability:
-          type: object
-          properties:
-            status:
-              type: string
-              enum: [awaitingReview, inProgress, completed, notApplicable]
-            isActionNeeded:
-              type: boolean
-            startDate:
-              type: string
-              format: date
-            endDate:
-              type: string
-              format: date
-            reason:
-              type: string
-              enum:
-                - moreInformationNeeded
-                - notSuitableForClient
-                - other
-            note:
-              type: string
-            dueDate:
-              type: string
-              format: date
-        funding:
+    Funding:
           type: object
           properties:
             startDate:
@@ -418,3 +427,113 @@ components:
                         format: date
                       note:
                         type: string
+
+    ActivityStatusSummary:
+      description: Defines the schema for summary data only
+      type: object
+      properties:
+        correlationId:
+          type: string
+        policyNumber:
+          type: string
+        applicationOrigin:
+          type: object
+          properties:
+            platform:
+              type: string
+            isElectronic:
+              type: boolean
+            id:
+              type: string
+        cusip:
+          type: string
+        status:
+          type: string
+          enum: [received, inProgress, completed, cancelled]
+        isActionNeeded:
+          type: boolean
+        actionSections:
+          type: string
+          enum: [suitability, cansellvalidation, documentReview, funding]
+        signedDate:
+          type: string
+          format: date
+        receivedDate:
+          type: string
+          format: date
+        issuedDate:
+          type: string
+          format: date
+        effectiveDate:
+          type: string
+          format: date
+        rateEffectiveDate:
+          type: string
+          format: date
+        fundsHeldUntilDate:
+          type: string
+          format: date
+        cancellation:
+          type: object
+          properties:
+            initiator:
+              type: string
+              enum: [advisor, carrier, client]
+            cancelledDate:
+              type: string
+              format: date
+            reason:
+              type: string
+        delivery:
+          type: object
+          properties:
+            sentDate:
+              type: string
+              format: date
+            method:
+              type: string
+              enum:
+                - fedex
+                - ups
+                - electronicDelivery
+                - handDelivery
+                - usps
+            trackingNumber:
+              type: string
+        caseManager:
+          type: object
+          properties:
+            fullName:
+              type: string
+            phoneNumber:
+              type: string
+            emailAddress:
+              type: string
+            websiteURL:
+              type: string
+    ActivityStatusDetail:
+      description: Defines the schema for Activity Status Detail
+      type: object
+      properties:
+        summary:
+          $ref: "#/components/schemas/ActivityStatusSummary"
+        producers:
+          type: array
+          items:
+            anyOf:
+              - $ref: "#/components/schemas/IndividualProducer"
+              - $ref: "#/components/schemas/EntityProducer"
+        parties:
+          type: array
+          items:
+            anyOf:
+              - $ref: "#/components/schemas/IndividualParty"
+              - $ref: "#/components/schemas/EntityParty"
+        canSellValidation:
+          $ref: "#/components/schemas/CanSellValidation"
+        documentReview:
+          $ref: "#/components/schemas/DocumentReview"
+        suitability:
+          $ref: "#/components/schemas/Suitability"
+        funding:
+          $ref: "#/components/schemas/Funding"
