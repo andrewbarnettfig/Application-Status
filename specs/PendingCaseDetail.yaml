@@ -87,7 +87,7 @@ paths:
               schema:
                 $ref: "#/components/schemas/Funding"
 
-  /v1/policies/{policyNumber}/activity-status/documentReview:
+  /v1/policies/{policyNumber}/activity-status/document-review:
     parameters:
           - name: policyNumber
             in: path
