@@ -35,6 +35,26 @@ paths:
             schema:
               type: string
     get:
+      operationId: getActivityStatusSummaryByPolicyNumber
+      summary: Retrieve a summary of activity status of a policy
+      description: Retrieve summary activity related to the status details of a policy.
+      
+      responses:
+        "200":
+          description: Policy activity status successfully retrieved
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ActivityStatusDetail"
+
+  /v1/policies/{policyNumber}/activity-status/full:
+    parameters:
+          - name: policyNumber
+            in: path
+            required: true
+            schema:
+              type: string
+    get:
       operationId: getActivityStatusByPolicyNumber
       summary: Retrieve activity status of a policy
       description: Retrieve all activity related to the status details of a policy.
@@ -46,38 +66,107 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/ActivityStatusDetail"
+
+  /v1/policies/{policyNumber}/activity-status/funding:
+    parameters:
+          - name: policyNumber
+            in: path
+            required: true
+            schema:
+              type: string
+    get:
+      operationId: getFundingStatusByPolicyNumber
+      summary: Retrieve funding activity status of a policy
+      description: Retrieve all funding activity related to the status details of a policy.
+      
+      responses:
+        "200":
+          description: Policy funding activity status successfully retrieved
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Funding"
+
+  /v1/policies/{policyNumber}/activity-status/documentReview:
+    parameters:
+          - name: policyNumber
+            in: path
+            required: true
+            schema:
+              type: string
+    get:
+      operationId: getDocumentReviewStatusByPolicyNumber
+      summary: Retrieve funding activity status of a policy
+      description: Retrieve all document review activity related to the status details of a policy.
+      
+      responses:
+        "200":
+          description: Document rewview information successfully retrieved
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/DocumentReview"
+
+  /v1/policies/{policyNumber}/activity-status/suitability:
+    parameters:
+          - name: policyNumber
+            in: path
+            required: true
+            schema:
+              type: string
+    get:
+      operationId: getSuitabilityInformationByPolicyNumber
+      summary: Retrieve suitablilty status of a policy
+      description: Retrieve the suitability iinformation for a policy.
+      
+      responses:
+        "200":
+          description: Suitability information successfully retrieved
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Suitability"
+
+  /v1/policies/{policyNumber}/activity-status/can-sell-validation:
+    parameters:
+          - name: policyNumber
+            in: path
+            required: true
+            schema:
+              type: string
+    get:
+      operationId: getCanSellValidationByPolicyNumber
+      summary: Retrieve suitablilty status of a policy
+      description: Retrieve the can sell validation for a policy.
+      
+      responses:
+        "200":
+          description: Can sell validation information successfully retrieved
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/CanSellValidation"
+
 components:
   schemas:
     IndividualIdentity:
       type: object
-      required: [firstName, lastName]
       properties:
         type:
           type: string
           const: individual
         firstName:
           type: string
-          minLength: 1
-          maxLength: 105
-          pattern: ^[a-zA-Z0-9=()=*@#\\s.,'_/~%$!();:&amp;&quot;+&#x00ae;®`\\-\\\\?\"=]{1,105}
         middleName:
           type: string
-          minLength: 1
-          maxLength: 105
-          pattern: ^[a-zA-Z0-9=()=*@#\\s.,'_/~%$!();:&amp;&quot;+&#x00ae;®`\\-\\\\?\"=]{1,105}
         lastName:
           type: string
-          minLength: 1
-          maxLength: 105
-          pattern: ^[a-zA-Z0-9=()=*@#\\s.,'_/~%$!();:&amp;&quot;+&#x00ae;®`\\-\\\\?\"=]{1,105}
         taxId:
           type: string
     IndividualProducer:
-      required: [relationships]
       allOf:
         - $ref: "#/components/schemas/IndividualIdentity"
         - type: object
-        
           properties:
             npn:
               type: string
@@ -99,7 +188,6 @@ components:
         - $ref: "#/components/schemas/PartyRelationship"
     EntityIdentity:
       type: object
-      required: [name]
       properties:
         type:
           type: string
@@ -110,7 +198,6 @@ components:
           type: string
     EntityProducer:
       type: object
-      required: [relationships]
       allOf:
         - $ref: "#/components/schemas/EntityIdentity"
         - type: object
@@ -134,8 +221,6 @@ components:
         - $ref: "#/components/schemas/PartyRelationship"
     PartyRelationship:
       type: array
-      minItems: 1
-      maxItems: 2
       items:
         type: string
         enum:
@@ -145,120 +230,8 @@ components:
           - jointAnnuitant
           - primaryBeneficiary
           - contingentBeneficiary
-    ActivityStatusDetail:
-      description: Defines the schema for Activity Status Detail
-      type: object
-      required: [policyNumber,applicationOrigin,cusip,status,isActionNeeded,signedDate]
-      properties:
-        correlationId:
-          type: string
-        policyNumber:
-          type: string
-          minLength: 1
-          maxLength: 30
-        applicationOrigin:
+    CanSellValidation:
           type: object
-          required: [platform, isElectronic]
-          properties:
-            platform:
-              type: string
-            isElectronic:
-              type: boolean
-            id:
-              type: string
-        cusip:
-          type: string
-          minLength: 9
-          maxLength: 9
-        status:
-          type: string
-          enum: [received, inProgress, completed, cancelled]
-        isActionNeeded:
-          type: boolean
-        signedDate:
-          type: string
-          format: date
-        receivedDate:
-          type: string
-          format: date
-        issuedDate:
-          type: string
-          format: date
-        effectiveDate:
-          type: string
-          format: date
-        rateEffectiveDate:
-          type: string
-          format: date
-        fundsHeldUntilDate:
-          type: string
-          format: date
-        cancellation:
-          type: object
-          required: [initiator, cancelledDate]
-          properties:
-            initiator:
-              type: string
-              enum: [advisor, carrier, client]
-            cancelledDate:
-              type: string
-              format: date
-            reason:
-              type: string
-        producers:
-          type: array
-          minItems: 1
-          items:
-            anyOf:
-              - $ref: "#/components/schemas/IndividualProducer"
-              - $ref: "#/components/schemas/EntityProducer"
-        parties:
-          type: array
-          minLength: 1
-          items:
-            anyOf:
-              - $ref: "#/components/schemas/IndividualParty"
-              - $ref: "#/components/schemas/EntityParty"
-        delivery:
-          type: object
-          properties:
-            sentDate:
-              type: string
-              format: date
-            method:
-              type: string
-              enum:
-                - fedex
-                - ups
-                - electronicDelivery
-                - handDelivery
-                - usps
-            trackingNumber:
-              type: string
-              minLength: 1
-              maxLength: 65
-        caseManager:
-          type: object
-          required: [fullName, phoneNumber]
-          properties:
-            fullName:
-              type: string
-              minLength: 1
-              maxLength: 180
-              pattern:  ^[a-zA-Z0-9=()=*@#\\s.,'_/~%$!();:&amp;&quot;+&#x00ae;®`\\-\\\\?\"=]{1,105}
-            phoneNumber:
-              type: string
-              minLength: 10
-              maxLength: 15
-            emailAddress:
-              type: string
-              format: emailAddress
-            websiteURL:
-              type: string
-              format: uri
-        canSellValidation:
-          type: object
-          required: [status,isActionNeeded]
           properties:
             status:
               type: string
@@ -289,67 +262,17 @@ components:
                       - other
                   note:
                     type: string
-                    minLength: 1
-                    maxLength: 2000
                   affectedProducer:
                     type: object
                     properties:
                       npn:
                         type: string
-                        maxLength: 10
                       crdNumber:
                         type: string
-                        maxLength: 10
                       taxId:
                         type: string
-                        maxLength: 9
-        documentReview:
+    Suitability:
           type: object
-          required: [status, isActionNeeded]
-          properties:
-            status:
-              type: string
-              enum: [awaitingReview, inProgress, completed]
-            isActionNeeded:
-              type: boolean
-            startDate:
-              type: string
-              format: date
-            endDate:
-              type: string
-              format: date
-            note:
-              type: string
-              minLength: 1
-              maxLength: 2000
-            issues:
-              type: array
-              items:
-                type: object
-                required: [reason]
-                properties:
-                  reason:
-                    type: string
-                    enum:
-                      - applicationIssue
-                      - contactCarrier
-                      - incompleteForm
-                      - missingForm
-                      - missingSignature
-                      - needClarity
-                      - other
-                  formName:
-                    type: string
-                  formNumber:
-                    type: string
-                  dueDate:
-                    type: string
-                    format: date
-                  note:
-                    type: string
-        suitability:
-          type: object
-          required: [status]
           properties:
             status:
               type: string
@@ -370,14 +293,51 @@ components:
                 - other
             note:
               type: string
-              minLength: 1
-              maxLength: 1000
             dueDate:
               type: string
               format: date
-        funding:
+    DocumentReview:
           type: object
-          required: [status,isActionNeeded,anticipatedAmount,receivedAmount]
+          properties:
+            status:
+              type: string
+              enum: [awaitingReview, inProgress, completed]
+            isActionNeeded:
+              type: boolean
+            startDate:
+              type: string
+              format: date
+            endDate:
+              type: string
+              format: date
+            note:
+              type: string
+            issues:
+              type: array
+              items:
+                type: object
+                properties:
+                  reason:
+                    type: string
+                    enum:
+                      - applicationIssue
+                      - contactCarrier
+                      - incompleteForm
+                      - missingForm
+                      - missingSignature
+                      - needClarity
+                      - other
+                  formName:
+                    type: string
+                  formNumber:
+                    type: string
+                  dueDate:
+                    type: string
+                    format: date
+                  note:
+                    type: string
+    Funding:
+          type: object
           properties:
             startDate:
               type: string
@@ -392,8 +352,6 @@ components:
               enum: [awaitingReview, inProgress, completed]
             note:
               type: string
-              minLength: 1
-              maxLength: 2000
             sources:
               type: array
               items:
@@ -427,10 +385,10 @@ components:
                     type: boolean
                   anticipatedAmount:
                     type: number
-                    format: double
+                    format: float
                   receivedAmount:
                     type: number
-                    format: double
+                    format: float
                   receivedDate:
                     type: string
                     format: date
@@ -454,18 +412,11 @@ components:
                     type: string
                   cedingCompany:
                     type: object
-                    required: [name,accountNumber]
                     properties:
                       name:
                         type: string
-                        minLength: 1
-                        maxLength: 180
-                        pattern:  ^[a-zA-Z0-9=()=*@#\\s.,'_/~%$!();:&amp;&quot;+&#x00ae;®`\\-\\\\?\"=]{1,105}
                       accountNumber:
                         type: string
-                        minnLength: 1
-                        maxLength: 30
-                        pattern: "(^[0-9A-Za-z*@#\\s.,'_/~%$!();:&amp;&quot;+&#x00ae;`\\-\\\\?\"=]{1,30}$)"
                       startDate:
                         type: string
                         format: date
@@ -476,5 +427,113 @@ components:
                         format: date
                       note:
                         type: string
-                        minLength: 1
-                        maxLength: 2000
+
+    ActivityStatusSummary:
+      description: Defines the schema for summary data only
+      type: object
+      properties:
+        correlationId:
+          type: string
+        policyNumber:
+          type: string
+        applicationOrigin:
+          type: object
+          properties:
+            platform:
+              type: string
+            isElectronic:
+              type: boolean
+            id:
+              type: string
+        cusip:
+          type: string
+        status:
+          type: string
+          enum: [received, inProgress, completed, cancelled]
+        isActionNeeded:
+          type: boolean
+        actionSections:
+          type: string
+          enum: [suitability, cansellvalidation, documentReview, funding]
+        signedDate:
+          type: string
+          format: date
+        receivedDate:
+          type: string
+          format: date
+        issuedDate:
+          type: string
+          format: date
+        effectiveDate:
+          type: string
+          format: date
+        rateEffectiveDate:
+          type: string
+          format: date
+        fundsHeldUntilDate:
+          type: string
+          format: date
+        cancellation:
+          type: object
+          properties:
+            initiator:
+              type: string
+              enum: [advisor, carrier, client]
+            cancelledDate:
+              type: string
+              format: date
+            reason:
+              type: string
+        delivery:
+          type: object
+          properties:
+            sentDate:
+              type: string
+              format: date
+            method:
+              type: string
+              enum:
+                - fedex
+                - ups
+                - electronicDelivery
+                - handDelivery
+                - usps
+            trackingNumber:
+              type: string
+        caseManager:
+          type: object
+          properties:
+            fullName:
+              type: string
+            phoneNumber:
+              type: string
+            emailAddress:
+              type: string
+            websiteURL:
+              type: string
+    ActivityStatusDetail:
+      description: Defines the schema for Activity Status Detail
+      type: object
+      properties:
+        summary:
+          $ref: "#/components/schemas/ActivityStatusSummary"
+        producers:
+          type: array
+          items:
+            anyOf:
+              - $ref: "#/components/schemas/IndividualProducer"
+              - $ref: "#/components/schemas/EntityProducer"
+        parties:
+          type: array
+          items:
+            anyOf:
+              - $ref: "#/components/schemas/IndividualParty"
+              - $ref: "#/components/schemas/EntityParty"
+        canSellValidation:
+          $ref: "#/components/schemas/CanSellValidation"
+        documentReview:
+          $ref: "#/components/schemas/DocumentReview"
+        suitability:
+          $ref: "#/components/schemas/Suitability"
+        funding:
+          $ref: "#/components/schemas/Funding"
