@@ -513,27 +513,27 @@ components:
               type: string
     ActivityStatusDetail:
       description: Defines the schema for Activity Status Detail
-      type: object
-      properties:
-        summary:
-          $ref: "#/components/schemas/ActivityStatusSummary"
-        producers:
-          type: array
-          items:
-            anyOf:
-              - $ref: "#/components/schemas/IndividualProducer"
-              - $ref: "#/components/schemas/EntityProducer"
-        parties:
-          type: array
-          items:
-            anyOf:
-              - $ref: "#/components/schemas/IndividualParty"
-              - $ref: "#/components/schemas/EntityParty"
-        canSellValidation:
-          $ref: "#/components/schemas/CanSellValidation"
-        documentReview:
-          $ref: "#/components/schemas/DocumentReview"
-        suitability:
-          $ref: "#/components/schemas/Suitability"
-        funding:
-          $ref: "#/components/schemas/Funding"
+      allOf:
+        $ref: "#/components/schemas/ActivityStatusSummary"
+        type: object
+        properties:
+          producers:
+            type: array
+            items:
+              anyOf:
+                - $ref: "#/components/schemas/IndividualProducer"
+                - $ref: "#/components/schemas/EntityProducer"
+          parties:
+            type: array
+            items:
+              anyOf:
+                - $ref: "#/components/schemas/IndividualParty"
+                - $ref: "#/components/schemas/EntityParty"
+          canSellValidation:
+            $ref: "#/components/schemas/CanSellValidation"
+          documentReview:
+            $ref: "#/components/schemas/DocumentReview"
+          suitability:
+            $ref: "#/components/schemas/Suitability"
+          funding:
+            $ref: "#/components/schemas/Funding"
