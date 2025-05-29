@@ -1,155 +1,413 @@
 openapi: 3.1.0
 info:
-  title: Insurance Policy API
-  description: API for managing insurance policy data including policy details, transmission, agents, parties, funding, and more.
+  title: Insurance Policy and Activity Status APIs
+  description: APIs for managing insurance policy data including activity status, details, transmission, agents, parties, funding, documents, and more.
   version: 1.0.0
   license:
     name: MIT
     url: https://github.com/Insured-Retirement-Institute/Pending-Case/blob/initial-draft-revision-20250429/LICENSE
-
 paths:
-  /v1/applications/{applicationId}/activity-status:
+  /v1/activity-statuses/searches:
     parameters:
-          - name: applicationId
-            in: path
-            required: true
+      - name: orderBy
+        in: query
+        required: false
+        schema:
+          type: string
+          enum: [status, signedDate, receivedDate, effectiveDate]
+          default: IssueDate
+      - name: sortOrder
+        in: query
+        required: false
+        schema:
+          type: string
+          enum: [asc, desc]
+          default: Asc
+      - name: start
+        description: "Starting item for pagination."
+        in: query
+        required: false
+        schema:
+          type: integer
+          default: 1
+      - name: limit
+        description: "Number of items returned."
+        in: query
+        required: false
+        schema:
+          type: integer
+          default: 20
+          minimum: 1
+          maximum: 1000
+    post:
+      operationId: postActivityStatusSearch
+      summary: Search for policy activity statuses
+      description: Retrieve policy activity statuses based on search criteria.
+      tags:
+        - Activity Status
+      requestBody:
+        content:
+          application/json:
             schema:
-              type: string
-    get:
-      operationId: getActivityStatusByApplicationId
-      summary: Retrieve activity status of an application
-      description: Retrieve all activity related to the status details of an application.
-      
+              $ref: '#/components/schemas/SearchRequest'
       responses:
         "200":
-          description: Application activity status successfully retrieved
+          description: Policy activity statuses successfully retrieved
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/ActivityStatusSummary"
-  /v1/policies/{policyNumber}/activity-status:
+                $ref: "#/components/schemas/ActivityStatusesPagedResult"
+        "401":
+          description: Unauthorized
+        "403":
+          description: Forbidden
+  /v1/activity-statuses:
+    parameters:
+      - name: associatedFirmId
+        in: query
+        required: false
+        schema:
+          type: string
+      - name: orderBy
+        in: query
+        required: false
+        schema:
+          type: string
+          enum: [status, signedDate, receivedDate, effectiveDate]
+          default: IssueDate
+      - name: sortOrder
+        in: query
+        required: false
+        schema:
+          type: string
+          enum: [asc, desc]
+          default: Asc
+      - name: start
+        description: "Starting item for pagination."
+        in: query
+        required: false
+        schema:
+          type: integer
+          default: 1
+      - name: limit
+        description: "Number of items returned."
+        in: query
+        required: false
+        schema:
+          type: integer
+          default: 20
+          minimum: 1
+          maximum: 1000
+    get:
+      operationId: getActivityStatuses
+      summary: Retrieve policy activity statuses 
+      description: Retrieve all policy activity statuses.
+      tags:
+        - Activity Status
+      responses:
+        "200":
+          description: Policy activity statuses successfully retrieved
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ActivityStatusesPagedResult"
+  /v1/activity-statuses/{policyNumber}:
     parameters:
           - name: policyNumber
             in: path
             required: true
             schema:
               type: string
-    get:
-      operationId: getActivityStatusSummaryByPolicyNumber
-      summary: Retrieve a summary of activity status of a policy
-      description: Retrieve summary activity related to the status details of a policy.
-      
-      responses:
-        "200":
-          description: Policy activity status successfully retrieved
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/ActivityStatusDetail"
-
-  /v1/policies/{policyNumber}/activity-status/full:
-    parameters:
-          - name: policyNumber
-            in: path
-            required: true
+          - name: associatedFirmId
+            in: query
+            required: false
             schema:
               type: string
     get:
       operationId: getActivityStatusByPolicyNumber
-      summary: Retrieve activity status of a policy
-      description: Retrieve all activity related to the status details of a policy.
-      
+      summary: Retrieve a policy activity status
+      description: Retrieve a policy activity status.
+      tags:
+        - Activity Status
       responses:
         "200":
           description: Policy activity status successfully retrieved
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/ActivityStatusDetail"
-
-  /v1/policies/{policyNumber}/activity-status/funding:
+                $ref: "#/components/schemas/ActivityStatus"
+        "401":
+          description: Unauthorized
+        "403":
+          description: Forbidden
+        "404":
+          description: NotFound
+  /v1/policies:
+    parameters:
+      - name: associatedFirmId
+        in: query
+        required: false
+        schema:
+          type: string
+    get:
+      operationId: getPolicies
+      summary: Retrieve policies
+      description: Retrieve all policies.
+      tags:
+        - Policy
+      responses:
+        "200":
+          description: Policies successfully retrieved
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PoliciesPagedResult"
+        "401":
+          description: Unauthorized
+        "403":
+          description: Forbidden
+  /v1/policies/{policyNumber}:
+    parameters:
+      - name: policyNumber
+        in: path
+        required: true
+        schema:
+          type: string
+      - name: associatedFirmId
+        in: query
+        required: false
+        schema:
+          type: string
+    get:
+      operationId: getPolicyByPolicyNumber
+      summary: Retrieve a policy
+      description: Retrieve primary data of a policy.
+      tags:
+        - Policy
+      responses:
+        "200":
+          description: Policy successfully retrieved
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Policy"
+        "401":
+          description: Unauthorized
+        "403":
+          description: Forbidden
+        "404":
+          description: NotFound
+  /v1/policies/{policyNumber}/producers:
     parameters:
           - name: policyNumber
             in: path
             required: true
+            schema:
+              type: string
+          - name: associatedFirmId
+            in: query
+            required: false
+            schema:
+              type: string
+    get:
+      operationId: getPolicyProducersByPolicyNumber
+      summary: Retrieve the producers of a policy
+      description: Retrieve producer data of a policy.
+      tags:
+        - Policy
+      responses:
+        "200":
+          description: Policy parties successfully retrieved
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Producers"
+        "401":
+          description: Unauthorized
+        "403":
+          description: Forbidden
+        "404":
+          description: NotFound
+  /v1/policies/{policyNumber}/parties:
+    parameters:
+          - name: policyNumber
+            in: path
+            required: true
+            schema:
+              type: string
+          - name: associatedFirmId
+            in: query
+            required: false
+            schema:
+              type: string
+    get:
+      operationId: getPolicyPartiesByPolicyNumber
+      summary: Retrieve the parties of a policy
+      description: Retrieve party data of a policy.
+      tags:
+        - Policy
+      responses:
+        "200":
+          description: Policy parties successfully retrieved
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Parties"
+        "401":
+          description: Unauthorized
+        "403":
+          description: Forbidden
+        "404":
+          description: NotFound
+  /v1/policies/{policyNumber}/fundings:
+    parameters:
+          - name: policyNumber
+            in: path
+            required: true
+            schema:
+              type: string
+          - name: associatedFirmId
+            in: query
+            required: false
             schema:
               type: string
     get:
       operationId: getFundingStatusByPolicyNumber
-      summary: Retrieve funding activity status of a policy
-      description: Retrieve all funding activity related to the status details of a policy.
-      
+      summary: Retrieve policy funding data
+      description: Retrieve funding data of a policy.
+      tags:
+        - Policy
       responses:
         "200":
-          description: Policy funding activity status successfully retrieved
+          description: Policy funding successfully retrieved
           content:
             application/json:
               schema:
                 $ref: "#/components/schemas/Funding"
-
-  /v1/policies/{policyNumber}/activity-status/document-review:
+        "401":
+          description: Unauthorized
+        "403":
+          description: Forbidden
+        "404":
+          description: NotFound
+  /v1/policies/{policyNumber}/document-reviews:
     parameters:
           - name: policyNumber
             in: path
             required: true
+            schema:
+              type: string
+          - name: associatedFirmId
+            in: query
+            required: false
             schema:
               type: string
     get:
       operationId: getDocumentReviewStatusByPolicyNumber
-      summary: Retrieve funding activity status of a policy
-      description: Retrieve all document review activity related to the status details of a policy.
-      
+      summary: Retrieve policy document review data
+      description: Retrieve document review data of a policy.
+      tags:
+        - Policy
       responses:
         "200":
-          description: Document rewview information successfully retrieved
+          description: Policy document review successfully retrieved
           content:
             application/json:
               schema:
                 $ref: "#/components/schemas/DocumentReview"
-
-  /v1/policies/{policyNumber}/activity-status/suitability:
+        "401":
+          description: Unauthorized
+        "403":
+          description: Forbidden
+        "404":
+          description: NotFound
+  /v1/policies/{policyNumber}/suitability:
     parameters:
           - name: policyNumber
             in: path
             required: true
+            schema:
+              type: string
+          - name: associatedFirmId
+            in: query
+            required: false
             schema:
               type: string
     get:
       operationId: getSuitabilityInformationByPolicyNumber
-      summary: Retrieve suitablilty status of a policy
-      description: Retrieve the suitability iinformation for a policy.
-      
+      summary: Retrieve policy suitability data
+      description: Retrieve suitability data of a policy.
+      tags:
+        - Policy
       responses:
         "200":
-          description: Suitability information successfully retrieved
+          description: Policy suitability successfully retrieved
           content:
             application/json:
               schema:
                 $ref: "#/components/schemas/Suitability"
-
-  /v1/policies/{policyNumber}/activity-status/can-sell-validation:
+        "401":
+          description: Unauthorized
+        "403":
+          description: Forbidden
+        "404":
+          description: NotFound
+  /v1/policies/{policyNumber}/can-sell-validations:
     parameters:
           - name: policyNumber
             in: path
             required: true
             schema:
               type: string
+          - name: associatedFirmId
+            in: query
+            required: false
+            schema:
+              type: string
     get:
       operationId: getCanSellValidationByPolicyNumber
-      summary: Retrieve suitablilty status of a policy
-      description: Retrieve the can sell validation for a policy.
-      
+      summary: Retrieve policy can sell validation data
+      description: Retrieve can sell valiation data of a policy.
+      tags:
+        - Policy
       responses:
         "200":
-          description: Can sell validation information successfully retrieved
+          description: Policy can sell validation successfully retrieved
           content:
             application/json:
               schema:
                 $ref: "#/components/schemas/CanSellValidation"
-
+        "401":
+          description: Unauthorized
+        "403":
+          description: Forbidden
+        "404":
+          description: NotFound
 components:
   schemas:
+    SearchRequest:
+      description: Schema for search request data
+      type: object
+      properties:
+        policyNumber:
+          type: string
+        applicationNumber:
+          type: string
+        associatedFirmId:
+          type: string
+        cusip:
+          type: string
+        producerNumber:
+          type: string
+        npn: 
+          type: string
+        crdNumber:
+          type: string
+        partyTaxId:
+          type: string
+      additionalProperties: false
     IndividualIdentity:
+      description: Schema for individual identity data
       type: object
       properties:
         type:
@@ -164,6 +422,8 @@ components:
         taxId:
           type: string
     IndividualProducer:
+      description: Schema for individual producer data
+      type: object
       allOf:
         - $ref: "#/components/schemas/IndividualIdentity"
         - type: object
@@ -182,11 +442,13 @@ components:
                   - additionalAgent
                   - investmentAdvisorRepresentative
     IndividualParty:
+      description: Schema for individual party data
       type: object
       allOf:
         - $ref: "#/components/schemas/IndividualIdentity"
         - $ref: "#/components/schemas/PartyRelationship"
     EntityIdentity:
+      description: Schema for entity identity data
       type: object
       properties:
         type:
@@ -197,6 +459,7 @@ components:
         taxId:
           type: string
     EntityProducer:
+      description: Schema for entity producer data
       type: object
       allOf:
         - $ref: "#/components/schemas/EntityIdentity"
@@ -215,221 +478,244 @@ components:
                   - registeredInvestmentAdvisoryFirm
                   - independentMarketingOrganization
     EntityParty:
+      description: Schema for entity party data
       type: object
       allOf:
         - $ref: "#/components/schemas/EntityIdentity"
         - $ref: "#/components/schemas/PartyRelationship"
     PartyRelationship:
+      description: Schema for party relationship data
+      type: object
+      properties:
+        relationships:
+          type: array
+          items:
+            type: string
+            enum:
+              - owner
+              - jointOwner
+              - annuitant
+              - jointAnnuitant
+              - primaryBeneficiary
+              - contingentBeneficiary
+    Producers:
+      description: Schema for producers data
       type: array
       items:
-        type: string
-        enum:
-          - owner
-          - jointOwner
-          - annuitant
-          - jointAnnuitant
-          - primaryBeneficiary
-          - contingentBeneficiary
+        anyOf:
+          - $ref: "#/components/schemas/IndividualProducer"
+          - $ref: "#/components/schemas/EntityProducer"
+    Parties:  
+      description: Schema for parties data
+      type: array
+      items:
+        anyOf:
+          - $ref: "#/components/schemas/IndividualParty"
+          - $ref: "#/components/schemas/EntityParty"
     CanSellValidation:
-          type: object
-          properties:
-            status:
-              type: string
-              enum: [awaitingReview, inProgress, completed]
-            isActionNeeded:
-              type: boolean
-            startDate:
-              type: string
-              format: date
-            endDate:
-              type: string
-              format: date
-            note:
-              type: string
-            issues:
-              type: array
-              items:
+      description: Schema for policy can sell validation data
+      type: object
+      properties:
+        status:
+          type: string
+          enum: [awaitingReview, inProgress, completed]
+        isActionNeeded:
+          type: boolean
+        startDate:
+          type: string
+          format: date
+        endDate:
+          type: string
+          format: date
+        note:
+          type: string
+        issues:
+          type: array
+          items:
+            type: object
+            properties:
+              type:
+                type: string
+                enum:
+                  - trainingIncompleteMissing
+                  - trainingExpired
+                  - agentNotAppointedForSale
+                  - jitAppointmentInProgress
+                  - agentNotLicensed
+                  - other
+              note:
+                type: string
+              affectedProducer:
                 type: object
                 properties:
-                  type:
+                  npn:
                     type: string
-                    enum:
-                      - trainingIncompleteMissing
-                      - trainingExpired
-                      - agentNotAppointedForSale
-                      - jitAppointmentInProgress
-                      - agentNotLicensed
-                      - other
-                  note:
+                  crdNumber:
                     type: string
-                  affectedProducer:
-                    type: object
-                    properties:
-                      npn:
-                        type: string
-                      crdNumber:
-                        type: string
-                      taxId:
-                        type: string
+                  taxId:
+                    type: string
     Suitability:
-          type: object
-          properties:
-            status:
-              type: string
-              enum: [awaitingReview, inProgress, completed, notApplicable]
-            isActionNeeded:
-              type: boolean
-            startDate:
-              type: string
-              format: date
-            endDate:
-              type: string
-              format: date
-            reason:
-              type: string
-              enum:
-                - moreInformationNeeded
-                - notSuitableForClient
-                - other
-            note:
-              type: string
-            dueDate:
-              type: string
-              format: date
+      description: Schema for policy suitability data
+      type: object
+      properties:
+        status:
+          type: string
+          enum: [awaitingReview, inProgress, completed, notApplicable]
+        isActionNeeded:
+          type: boolean
+        startDate:
+          type: string
+          format: date
+        endDate:
+          type: string
+          format: date
+        reason:
+          type: string
+          enum:
+            - moreInformationNeeded
+            - notSuitableForClient
+            - other
+        note:
+          type: string
+        dueDate:
+          type: string
+          format: date
     DocumentReview:
-          type: object
-          properties:
-            status:
-              type: string
-              enum: [awaitingReview, inProgress, completed]
-            isActionNeeded:
-              type: boolean
-            startDate:
-              type: string
-              format: date
-            endDate:
-              type: string
-              format: date
-            note:
-              type: string
-            issues:
-              type: array
-              items:
-                type: object
-                properties:
-                  reason:
-                    type: string
-                    enum:
-                      - applicationIssue
-                      - contactCarrier
-                      - incompleteForm
-                      - missingForm
-                      - missingSignature
-                      - needClarity
-                      - other
-                  formName:
-                    type: string
-                  formNumber:
-                    type: string
-                  dueDate:
-                    type: string
-                    format: date
-                  note:
-                    type: string
+      description: Schema for policy document review data
+      type: object
+      properties:
+        status:
+          type: string
+          enum: [awaitingReview, inProgress, completed]
+        isActionNeeded:
+          type: boolean
+        startDate:
+          type: string
+          format: date
+        endDate:
+          type: string
+          format: date
+        note:
+          type: string
+        issues:
+          type: array
+          items:
+            type: object
+            properties:
+              reason:
+                type: string
+                enum:
+                  - applicationIssue
+                  - contactCarrier
+                  - incompleteForm
+                  - missingForm
+                  - missingSignature
+                  - needClarity
+                  - other
+              formName:
+                type: string
+              formNumber:
+                type: string
+              dueDate:
+                type: string
+                format: date
+              note:
+                type: string
     Funding:
-          type: object
-          properties:
-            startDate:
-              type: string
-              format: date
-            endDate:
-              type: string
-              format: date
-            isActionNeeded:
-              type: boolean
-            status:
-              type: string
-              enum: [awaitingReview, inProgress, completed]
-            note:
-              type: string
-            sources:
-              type: array
-              items:
+      description: Schema for policy funding data
+      type: object
+      properties:
+        startDate:
+          type: string
+          format: date
+        endDate:
+          type: string
+          format: date
+        isActionNeeded:
+          type: boolean
+        status:
+          type: string
+          enum: [awaitingReview, inProgress, completed]
+        note:
+          type: string
+        sources:
+          type: array
+          items:
+            type: object
+            properties:
+              method:
+                type: string
+                enum:
+                  - anotherPolicy
+                  - check
+                  - clearinghouse
+                  - creditCard
+                  - debitCard
+                  - digitalPayment
+                  - electronicFundTransfer
+                  - payrollDeduction
+                  - wireTransfer
+              type:
+                type: string
+                enum:
+                  - contribution
+                  - directRollover
+                  - employeeContribution
+                  - employerContribution
+                  - full1035Exchange
+                  - indirectRollover
+                  - nonQualifiedTransferOfAssets
+                  - partial1035Exchange
+                  - qualifiedTransfer
+              isActionNeeded:
+                type: boolean
+              anticipatedAmount:
+                type: number
+                format: float
+              receivedAmount:
+                type: number
+                format: float
+              receivedDate:
+                type: string
+                format: date
+              status:
+                type: string
+                enum: [inProgress, complete]
+              reason:
+                type: string
+                enum:
+                  - awaitingFundsFromCedingCompany
+                  - contactTheCarrier
+                  - fundingDiscrepancy
+                  - nigoAtCedingCarrier
+                  - noFundsReceivedCash
+                  - pendingReg60
+                  - other
+              effectiveDate:
+                type: string
+                format: date
+              note:
+                type: string
+              cedingCompany:
                 type: object
                 properties:
-                  method:
+                  name:
                     type: string
-                    enum:
-                      - anotherPolicy
-                      - check
-                      - clearinghouse
-                      - creditCard
-                      - debitCard
-                      - digitalPayment
-                      - electronicFundTransfer
-                      - payrollDeduction
-                      - wireTransfer
-                  type:
+                  accountNumber:
                     type: string
-                    enum:
-                      - contribution
-                      - directRollover
-                      - employeeContribution
-                      - employerContribution
-                      - full1035Exchange
-                      - indirectRollover
-                      - nonQualifiedTransferOfAssets
-                      - partial1035Exchange
-                      - qualifiedTransfer
-                  isActionNeeded:
-                    type: boolean
-                  anticipatedAmount:
-                    type: number
-                    format: float
-                  receivedAmount:
-                    type: number
-                    format: float
-                  receivedDate:
+                  startDate:
                     type: string
                     format: date
-                  status:
+                  referenceNumber:
                     type: string
-                    enum: [inProgress, complete]
-                  reason:
-                    type: string
-                    enum:
-                      - awaitingFundsFromCedingCompany
-                      - contactTheCarrier
-                      - fundingDiscrepancy
-                      - nigoAtCedingCarrier
-                      - noFundsReceivedCash
-                      - pendingReg60
-                      - other
-                  effectiveDate:
+                  nextActivityDate:
                     type: string
                     format: date
                   note:
                     type: string
-                  cedingCompany:
-                    type: object
-                    properties:
-                      name:
-                        type: string
-                      accountNumber:
-                        type: string
-                      startDate:
-                        type: string
-                        format: date
-                      referenceNumber:
-                        type: string
-                      nextActivityDate:
-                        type: string
-                        format: date
-                      note:
-                        type: string
 
-    ActivityStatusSummary:
-      description: Defines the schema for summary data only
+    Policy:
+      description: Schema for policy data
       type: object
       properties:
         correlationId:
@@ -510,30 +796,61 @@ components:
             emailAddress:
               type: string
             websiteURL:
-              type: string
-    ActivityStatusDetail:
-      description: Defines the schema for Activity Status Detail
+              type: string        
+    Policies:
+      description: Schema for policies
+      type: array
+      items:
+        allOf:
+          - $ref: '#/components/schemas/Policy'
+          - type: object
+    PoliciesPagedResult:
+      description: Schema for the paged result of policies
+      type: object
+      properties:
+        startIndex:
+          type: integer
+        itemsCount:
+          type: integer
+        totalItemsCount:
+          type: integer
+        policies:
+          $ref: "#/components/schemas/Policies"
+    ActivityStatus:
+      description: Schema for activity status
+      type: object
       allOf:
-        $ref: "#/components/schemas/ActivityStatusSummary"
-        type: object
-        properties:
-          producers:
-            type: array
-            items:
-              anyOf:
-                - $ref: "#/components/schemas/IndividualProducer"
-                - $ref: "#/components/schemas/EntityProducer"
-          parties:
-            type: array
-            items:
-              anyOf:
-                - $ref: "#/components/schemas/IndividualParty"
-                - $ref: "#/components/schemas/EntityParty"
-          canSellValidation:
-            $ref: "#/components/schemas/CanSellValidation"
-          documentReview:
-            $ref: "#/components/schemas/DocumentReview"
-          suitability:
-            $ref: "#/components/schemas/Suitability"
-          funding:
-            $ref: "#/components/schemas/Funding"
+        - $ref: '#/components/schemas/Policy'
+        - type: object
+          properties:
+            producers:
+              $ref: "#/components/schemas/Producers"
+            parties:
+              $ref: "#/components/schemas/Parties"
+            canSellValidations:
+              $ref: "#/components/schemas/CanSellValidation"
+            documentReviews:
+              $ref: "#/components/schemas/DocumentReview"
+            suitability:
+              $ref: "#/components/schemas/Suitability"
+            fundings:
+              $ref: "#/components/schemas/Funding"
+    ActivityStatuses:
+      description: Schema for activity statuses
+      type: array
+      items:
+        allOf:
+          - $ref: '#/components/schemas/ActivityStatus'
+          - type: object
+    ActivityStatusesPagedResult:
+      description: Schema for the paged result of activity statuses
+      type: object
+      properties:
+        startIndex:
+          type: integer
+        itemsCount:
+          type: integer
+        totalItemsCount:
+          type: integer
+        activityStatuses:
+          $ref: "#/components/schemas/ActivityStatuses"
