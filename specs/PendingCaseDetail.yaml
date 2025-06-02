@@ -16,6 +16,9 @@ paths:
         - Activity Status
       parameters:
         - $ref: '#/components/parameters/correlationId'
+        - $ref: '#/components/parameters/senderParticipantId'
+        - $ref: '#/components/parameters/receiverParticipantId'
+        - $ref: '#/components/parameters/brokerNumber'
         - $ref: '#/components/parameters/orderBy'
         - $ref: '#/components/parameters/sortOrder'
         - $ref: '#/components/parameters/start'
@@ -43,8 +46,10 @@ paths:
         - Activity Status
       parameters:
         - $ref: '#/components/parameters/correlationId'
+        - $ref: '#/components/parameters/senderParticipantId'
+        - $ref: '#/components/parameters/receiverParticipantId'
+        - $ref: '#/components/parameters/brokerNumber'
         - $ref: '#/components/parameters/policyNumber'
-        - $ref: '#/components/parameters/applicationNumber'
         - $ref: '#/components/parameters/associatedFirmId'
         - $ref: '#/components/parameters/cusip'
         - $ref: '#/components/parameters/producerNumber'
@@ -75,6 +80,9 @@ paths:
         - Activity Status
       parameters:
         - $ref: '#/components/parameters/correlationId'
+        - $ref: '#/components/parameters/senderParticipantId'
+        - $ref: '#/components/parameters/receiverParticipantId'
+        - $ref: '#/components/parameters/brokerNumber'
         - name: policyNumber
           in: path
           required: true
@@ -103,8 +111,10 @@ paths:
         - Policy
       parameters:
         - $ref: '#/components/parameters/correlationId'
+        - $ref: '#/components/parameters/senderParticipantId'
+        - $ref: '#/components/parameters/receiverParticipantId'
+        - $ref: '#/components/parameters/brokerNumber'
         - $ref: '#/components/parameters/policyNumber'
-        - $ref: '#/components/parameters/applicationNumber'
         - $ref: '#/components/parameters/associatedFirmId'
         - $ref: '#/components/parameters/cusip'
         - $ref: '#/components/parameters/producerNumber'
@@ -128,7 +138,7 @@ paths:
           description: Unauthorized
         "403":
           description: Forbidden
-  /v1/policies/{policyNumber}:
+  /v1/activity-statuses/policies/{policyNumber}:
     get:
       operationId: getPolicyByPolicyNumber
       summary: Retrieve a policy
@@ -137,6 +147,9 @@ paths:
         - Policy
       parameters:
         - $ref: '#/components/parameters/correlationId'
+        - $ref: '#/components/parameters/senderParticipantId'
+        - $ref: '#/components/parameters/receiverParticipantId'
+        - $ref: '#/components/parameters/brokerNumber'
         - name: policyNumber
           in: path
           required: true
@@ -156,7 +169,7 @@ paths:
           description: Forbidden
         "404":
           description: NotFound
-  /v1/policies/{policyNumber}/producers:
+  /v1/activity-statuses/policies/{policyNumber}/producers:
     get:
       operationId: getPolicyProducersByPolicyNumber
       summary: Retrieve the producers of a policy
@@ -165,6 +178,8 @@ paths:
         - Policy
       parameters:
         - $ref: '#/components/parameters/correlationId'
+        - $ref: '#/components/parameters/senderParticipantId'
+        - $ref: '#/components/parameters/receiverParticipantId'        
         - name: policyNumber
           in: path
           required: true
@@ -184,7 +199,7 @@ paths:
           description: Forbidden
         "404":
           description: NotFound
-  /v1/policies/{policyNumber}/parties:
+  /v1/activity-statuses/policies/{policyNumber}/parties:
     get:
       operationId: getPolicyPartiesByPolicyNumber
       summary: Retrieve the parties of a policy
@@ -193,6 +208,9 @@ paths:
         - Policy
       parameters:
         - $ref: '#/components/parameters/correlationId'
+        - $ref: '#/components/parameters/senderParticipantId'
+        - $ref: '#/components/parameters/receiverParticipantId'
+        - $ref: '#/components/parameters/brokerNumber'
         - name: policyNumber
           in: path
           required: true
@@ -212,7 +230,7 @@ paths:
           description: Forbidden
         "404":
           description: NotFound
-  /v1/policies/{policyNumber}/fundings:
+  /v1/activity-statuses/policies/{policyNumber}/fundings:
     get:
       operationId: getFundingStatusByPolicyNumber
       summary: Retrieve policy funding data
@@ -221,6 +239,9 @@ paths:
         - Policy
       parameters:
         - $ref: '#/components/parameters/correlationId'
+        - $ref: '#/components/parameters/senderParticipantId'
+        - $ref: '#/components/parameters/receiverParticipantId'
+        - $ref: '#/components/parameters/brokerNumber'
         - name: policyNumber
           in: path
           required: true
@@ -240,7 +261,7 @@ paths:
           description: Forbidden
         "404":
           description: NotFound
-  /v1/policies/{policyNumber}/document-reviews:
+  /v1/activity-statuses/policies/{policyNumber}/document-reviews:
     get:
       operationId: getDocumentReviewStatusByPolicyNumber
       summary: Retrieve policy document review data
@@ -249,6 +270,9 @@ paths:
         - Policy
       parameters:
         - $ref: '#/components/parameters/correlationId'
+        - $ref: '#/components/parameters/senderParticipantId'
+        - $ref: '#/components/parameters/receiverParticipantId'
+        - $ref: '#/components/parameters/brokerNumber'
         - name: policyNumber
           in: path
           required: true
@@ -268,7 +292,7 @@ paths:
           description: Forbidden
         "404":
           description: NotFound
-  /v1/policies/{policyNumber}/suitability:
+  /v1/activity-statuses/policies/{policyNumber}/suitability:
     get:
       operationId: getSuitabilityInformationByPolicyNumber
       summary: Retrieve policy suitability data
@@ -277,6 +301,9 @@ paths:
         - Policy
       parameters:
         - $ref: '#/components/parameters/correlationId'
+        - $ref: '#/components/parameters/senderParticipantId'
+        - $ref: '#/components/parameters/receiverParticipantId'
+        - $ref: '#/components/parameters/brokerNumber'
         - name: policyNumber
           in: path
           required: true
@@ -296,7 +323,7 @@ paths:
           description: Forbidden
         "404":
           description: NotFound
-  /v1/policies/{policyNumber}/can-sell-validations:
+  /v1/activity-statuses/policies/{policyNumber}/can-sell-validations:
     get:
       operationId: getCanSellValidationByPolicyNumber
       summary: Retrieve policy can sell validation data
@@ -305,6 +332,9 @@ paths:
         - Policy
       parameters:
         - $ref: '#/components/parameters/correlationId'
+        - $ref: '#/components/parameters/senderParticipantId'
+        - $ref: '#/components/parameters/receiverParticipantId'
+        - $ref: '#/components/parameters/brokerNumber'
         - name: policyNumber
           in: path
           required: true
@@ -333,14 +363,29 @@ components:
       required: false
       schema:
         type: string
-    policyNumber:
-      name: policyNumber
-      in: query
+    senderParticipantId:
+      name: senderParticipantId
+      description: Optional custom header identifying the sender of the call
+      in: header
       required: false
       schema:
         type: string
-    applicationNumber:
-      name: applicationNumber
+    receiverParticipantId:
+      name: receiverParticipantId
+      description: Optional custom header identifying the receiver of the call
+      in: header
+      required: false
+      schema:
+        type: string
+    brokerNumber:
+      name: brokerNumber
+      description: Optional custom header identifying the broker number of the call
+      in: header
+      required: false
+      schema:
+        type: string
+    policyNumber:
+      name: policyNumber
       in: query
       required: false
       schema:
@@ -913,8 +958,6 @@ components:
       type: object
       properties:
         policyNumber:
-          type: string
-        applicationNumber:
           type: string
         associatedFirmId:
           type: string
