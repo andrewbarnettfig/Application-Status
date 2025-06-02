@@ -83,11 +83,7 @@ paths:
         - $ref: '#/components/parameters/senderParticipantId'
         - $ref: '#/components/parameters/receiverParticipantId'
         - $ref: '#/components/parameters/brokerNumber'
-        - name: policyNumber
-          in: path
-          required: true
-          schema:
-            type: string
+        - $ref: '#/components/parameters/policyNumberRequired'
         - $ref: '#/components/parameters/associatedFirmId'
       responses:
         "200":
@@ -150,11 +146,7 @@ paths:
         - $ref: '#/components/parameters/senderParticipantId'
         - $ref: '#/components/parameters/receiverParticipantId'
         - $ref: '#/components/parameters/brokerNumber'
-        - name: policyNumber
-          in: path
-          required: true
-          schema:
-            type: string
+        - $ref: '#/components/parameters/policyNumberRequired'
         - $ref: '#/components/parameters/associatedFirmId'
       responses:
         "200":
@@ -179,12 +171,8 @@ paths:
       parameters:
         - $ref: '#/components/parameters/correlationId'
         - $ref: '#/components/parameters/senderParticipantId'
-        - $ref: '#/components/parameters/receiverParticipantId'        
-        - name: policyNumber
-          in: path
-          required: true
-          schema:
-            type: string
+        - $ref: '#/components/parameters/receiverParticipantId'
+        - $ref: '#/components/parameters/policyNumberRequired'
         - $ref: '#/components/parameters/associatedFirmId'
       responses:
         "200":
@@ -211,11 +199,7 @@ paths:
         - $ref: '#/components/parameters/senderParticipantId'
         - $ref: '#/components/parameters/receiverParticipantId'
         - $ref: '#/components/parameters/brokerNumber'
-        - name: policyNumber
-          in: path
-          required: true
-          schema:
-            type: string
+        - $ref: '#/components/parameters/policyNumberRequired'
         - $ref: '#/components/parameters/associatedFirmId'
       responses:
         "200":
@@ -242,11 +226,7 @@ paths:
         - $ref: '#/components/parameters/senderParticipantId'
         - $ref: '#/components/parameters/receiverParticipantId'
         - $ref: '#/components/parameters/brokerNumber'
-        - name: policyNumber
-          in: path
-          required: true
-          schema:
-            type: string
+        - $ref: '#/components/parameters/policyNumberRequired'
         - $ref: '#/components/parameters/associatedFirmId'
       responses:
         "200":
@@ -273,11 +253,7 @@ paths:
         - $ref: '#/components/parameters/senderParticipantId'
         - $ref: '#/components/parameters/receiverParticipantId'
         - $ref: '#/components/parameters/brokerNumber'
-        - name: policyNumber
-          in: path
-          required: true
-          schema:
-            type: string
+        - $ref: '#/components/parameters/policyNumberRequired'
         - $ref: '#/components/parameters/associatedFirmId'
       responses:
         "200":
@@ -304,11 +280,7 @@ paths:
         - $ref: '#/components/parameters/senderParticipantId'
         - $ref: '#/components/parameters/receiverParticipantId'
         - $ref: '#/components/parameters/brokerNumber'
-        - name: policyNumber
-          in: path
-          required: true
-          schema:
-            type: string
+        - $ref: '#/components/parameters/policyNumberRequired'
         - $ref: '#/components/parameters/associatedFirmId'
       responses:
         "200":
@@ -335,11 +307,7 @@ paths:
         - $ref: '#/components/parameters/senderParticipantId'
         - $ref: '#/components/parameters/receiverParticipantId'
         - $ref: '#/components/parameters/brokerNumber'
-        - name: policyNumber
-          in: path
-          required: true
-          schema:
-            type: string
+        - $ref: '#/components/parameters/policyNumberRequired'
         - $ref: '#/components/parameters/associatedFirmId'
       responses:
         "200":
@@ -384,6 +352,13 @@ components:
       required: false
       schema:
         type: string
+    policyNumberRequired:
+      name: policyNumber
+      description: Required query parameter for the policy number to be retrieved
+      in: query
+      required: false
+      schema:
+        type: string
     policyNumber:
       name: policyNumber
       in: query
@@ -392,48 +367,56 @@ components:
         type: string
     associatedFirmId:
       name: associatedFirmId
+      description: Optional query parameter for the associated firm ID
       in: query
       required: false
       schema:
         type: string
     cusip:
       name: cusip
+      description: Optional query parameter for the CUSIP
       in: query
       required: false
       schema:
         type: string
     producerNumber:
       name: producerNumber
+      description: Optional query parameter for the producer number
       in: query
       required: false
       schema:
         type: string
     npn:
       name: npn
+      description: Optional query parameter for the NPN
       in: query
       required: false
       schema:
         type: string
     crdNumber:
       name: crdNumber
+      description: Optional query parameter for the CRD number
       in: query
       required: false
       schema:
         type: string
     partyTaxId:
       name: partyTaxId
+      description: Optional query parameter for the party tax ID
       in: query
       required: false
       schema:
         type: string
     applicationOriginId:
       name: applicationOriginId
+      description: Optional query parameter for the application origin ID
       in: query
       required: false
       schema:
         type: string
     trackingNumber:
       name: trackingNumber
+      description: Optional query parameter for the delivery tracking number
       in: query
       required: false
       schema:
