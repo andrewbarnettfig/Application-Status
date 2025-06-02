@@ -98,7 +98,7 @@ paths:
           description: Forbidden
         "404":
           description: NotFound
-  /v1/policies:
+  /v1/activity-statuses/policies:
     get:
       operationId: getPolicies
       summary: Retrieve policies
