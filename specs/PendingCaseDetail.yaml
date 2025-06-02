@@ -5,156 +5,124 @@ info:
   version: 1.0.0
   license:
     name: MIT
-    url: https://github.com/Insured-Retirement-Institute/Pending-Case/blob/initial-draft-revision-20250429/LICENSE
+    url: https://github.com/Insured-Retirement-Institute/Pending-Case/blob/main/LICENSE
 paths:
   /v1/activity-statuses/searches:
-    parameters:
-      - name: orderBy
-        in: query
-        required: false
-        schema:
-          type: string
-          enum: [status, signedDate, receivedDate, effectiveDate]
-          default: IssueDate
-      - name: sortOrder
-        in: query
-        required: false
-        schema:
-          type: string
-          enum: [asc, desc]
-          default: Asc
-      - name: start
-        description: "Starting item for pagination."
-        in: query
-        required: false
-        schema:
-          type: integer
-          default: 1
-      - name: limit
-        description: "Number of items returned."
-        in: query
-        required: false
-        schema:
-          type: integer
-          default: 20
-          minimum: 1
-          maximum: 1000
     post:
       operationId: postActivityStatusSearch
-      summary: Search for policy activity statuses
-      description: Retrieve policy activity statuses based on search criteria.
+      summary: Search for summary activity statuses
+      description: Retrieve summary activity statuses based on search criteria.
       tags:
         - Activity Status
+      parameters:
+        - $ref: '#/components/parameters/correlationId'
+        - $ref: '#/components/parameters/senderParticipantId'
+        - $ref: '#/components/parameters/receiverParticipantId'
+        - $ref: '#/components/parameters/brokerNumber'
+        - $ref: '#/components/parameters/orderBy'
+        - $ref: '#/components/parameters/sortOrder'
+        - $ref: '#/components/parameters/start'
+        - $ref: '#/components/parameters/limit'
       requestBody:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/SearchRequest'
+              $ref: '#/components/schemas/SearchSummaryActivityStatusesRequest'
       responses:
         "200":
           description: Policy activity statuses successfully retrieved
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/ActivityStatusesPagedResult"
+                $ref: "#/components/schemas/SummaryActivityStatusesPagedResult"
         "401":
           description: Unauthorized
-        "403":
-          description: Forbidden
   /v1/activity-statuses:
-    parameters:
-      - name: associatedFirmId
-        in: query
-        required: false
-        schema:
-          type: string
-      - name: orderBy
-        in: query
-        required: false
-        schema:
-          type: string
-          enum: [status, signedDate, receivedDate, effectiveDate]
-          default: IssueDate
-      - name: sortOrder
-        in: query
-        required: false
-        schema:
-          type: string
-          enum: [asc, desc]
-          default: Asc
-      - name: start
-        description: "Starting item for pagination."
-        in: query
-        required: false
-        schema:
-          type: integer
-          default: 1
-      - name: limit
-        description: "Number of items returned."
-        in: query
-        required: false
-        schema:
-          type: integer
-          default: 20
-          minimum: 1
-          maximum: 1000
     get:
       operationId: getActivityStatuses
-      summary: Retrieve policy activity statuses 
-      description: Retrieve all policy activity statuses.
+      summary: Retrieve summary activity statuses 
+      description: Retrieve all summary activity statuses.
       tags:
         - Activity Status
+      parameters:
+        - $ref: '#/components/parameters/correlationId'
+        - $ref: '#/components/parameters/senderParticipantId'
+        - $ref: '#/components/parameters/receiverParticipantId'
+        - $ref: '#/components/parameters/brokerNumber'
+        - $ref: '#/components/parameters/policyNumber'
+        - $ref: '#/components/parameters/associatedFirmId'
+        - $ref: '#/components/parameters/cusip'
+        - $ref: '#/components/parameters/producerNumber'
+        - $ref: '#/components/parameters/npn'
+        - $ref: '#/components/parameters/crdNumber'
+        - $ref: '#/components/parameters/partyTaxId'
+        - $ref: '#/components/parameters/applicationOriginId'
+        - $ref: '#/components/parameters/trackingNumber'
+        - $ref: '#/components/parameters/orderBy'
+        - $ref: '#/components/parameters/sortOrder'
+        - $ref: '#/components/parameters/start'
+        - $ref: '#/components/parameters/limit'
       responses:
         "200":
           description: Policy activity statuses successfully retrieved
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/ActivityStatusesPagedResult"
+                $ref: "#/components/schemas/SummaryActivityStatusesPagedResult"
+        "401":
+          description: Unauthorized
   /v1/activity-statuses/{policyNumber}:
-    parameters:
-          - name: policyNumber
-            in: path
-            required: true
-            schema:
-              type: string
-          - name: associatedFirmId
-            in: query
-            required: false
-            schema:
-              type: string
     get:
       operationId: getActivityStatusByPolicyNumber
-      summary: Retrieve a policy activity status
-      description: Retrieve a policy activity status.
+      summary: Retrieve a detail activity status
+      description: Retrieve a detail activity status.
       tags:
         - Activity Status
+      parameters:
+        - $ref: '#/components/parameters/correlationId'
+        - $ref: '#/components/parameters/senderParticipantId'
+        - $ref: '#/components/parameters/receiverParticipantId'
+        - $ref: '#/components/parameters/brokerNumber'
+        - $ref: '#/components/parameters/policyNumberRequired'
+        - $ref: '#/components/parameters/associatedFirmId'
       responses:
         "200":
           description: Policy activity status successfully retrieved
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/ActivityStatus"
+                $ref: "#/components/schemas/DetailActivityStatus"
         "401":
           description: Unauthorized
         "403":
           description: Forbidden
         "404":
           description: NotFound
-  /v1/policies:
-    parameters:
-      - name: associatedFirmId
-        in: query
-        required: false
-        schema:
-          type: string
+  /v1/activity-statuses/policies:
     get:
       operationId: getPolicies
       summary: Retrieve policies
       description: Retrieve all policies.
       tags:
         - Policy
+      parameters:
+        - $ref: '#/components/parameters/correlationId'
+        - $ref: '#/components/parameters/senderParticipantId'
+        - $ref: '#/components/parameters/receiverParticipantId'
+        - $ref: '#/components/parameters/brokerNumber'
+        - $ref: '#/components/parameters/policyNumber'
+        - $ref: '#/components/parameters/associatedFirmId'
+        - $ref: '#/components/parameters/cusip'
+        - $ref: '#/components/parameters/producerNumber'
+        - $ref: '#/components/parameters/npn'
+        - $ref: '#/components/parameters/crdNumber'
+        - $ref: '#/components/parameters/partyTaxId'
+        - $ref: '#/components/parameters/applicationOriginId'
+        - $ref: '#/components/parameters/trackingNumber'
+        - $ref: '#/components/parameters/orderBy'
+        - $ref: '#/components/parameters/sortOrder'
+        - $ref: '#/components/parameters/start'
+        - $ref: '#/components/parameters/limit'
       responses:
         "200":
           description: Policies successfully retrieved
@@ -166,24 +134,20 @@ paths:
           description: Unauthorized
         "403":
           description: Forbidden
-  /v1/policies/{policyNumber}:
-    parameters:
-      - name: policyNumber
-        in: path
-        required: true
-        schema:
-          type: string
-      - name: associatedFirmId
-        in: query
-        required: false
-        schema:
-          type: string
+  /v1/activity-statuses/policies/{policyNumber}:
     get:
       operationId: getPolicyByPolicyNumber
       summary: Retrieve a policy
       description: Retrieve primary data of a policy.
       tags:
         - Policy
+      parameters:
+        - $ref: '#/components/parameters/correlationId'
+        - $ref: '#/components/parameters/senderParticipantId'
+        - $ref: '#/components/parameters/receiverParticipantId'
+        - $ref: '#/components/parameters/brokerNumber'
+        - $ref: '#/components/parameters/policyNumberRequired'
+        - $ref: '#/components/parameters/associatedFirmId'
       responses:
         "200":
           description: Policy successfully retrieved
@@ -197,24 +161,19 @@ paths:
           description: Forbidden
         "404":
           description: NotFound
-  /v1/policies/{policyNumber}/producers:
-    parameters:
-          - name: policyNumber
-            in: path
-            required: true
-            schema:
-              type: string
-          - name: associatedFirmId
-            in: query
-            required: false
-            schema:
-              type: string
+  /v1/activity-statuses/policies/{policyNumber}/producers:
     get:
       operationId: getPolicyProducersByPolicyNumber
       summary: Retrieve the producers of a policy
       description: Retrieve producer data of a policy.
       tags:
         - Policy
+      parameters:
+        - $ref: '#/components/parameters/correlationId'
+        - $ref: '#/components/parameters/senderParticipantId'
+        - $ref: '#/components/parameters/receiverParticipantId'
+        - $ref: '#/components/parameters/policyNumberRequired'
+        - $ref: '#/components/parameters/associatedFirmId'
       responses:
         "200":
           description: Policy parties successfully retrieved
@@ -228,24 +187,20 @@ paths:
           description: Forbidden
         "404":
           description: NotFound
-  /v1/policies/{policyNumber}/parties:
-    parameters:
-          - name: policyNumber
-            in: path
-            required: true
-            schema:
-              type: string
-          - name: associatedFirmId
-            in: query
-            required: false
-            schema:
-              type: string
+  /v1/activity-statuses/policies/{policyNumber}/parties:
     get:
       operationId: getPolicyPartiesByPolicyNumber
       summary: Retrieve the parties of a policy
       description: Retrieve party data of a policy.
       tags:
         - Policy
+      parameters:
+        - $ref: '#/components/parameters/correlationId'
+        - $ref: '#/components/parameters/senderParticipantId'
+        - $ref: '#/components/parameters/receiverParticipantId'
+        - $ref: '#/components/parameters/brokerNumber'
+        - $ref: '#/components/parameters/policyNumberRequired'
+        - $ref: '#/components/parameters/associatedFirmId'
       responses:
         "200":
           description: Policy parties successfully retrieved
@@ -259,24 +214,20 @@ paths:
           description: Forbidden
         "404":
           description: NotFound
-  /v1/policies/{policyNumber}/fundings:
-    parameters:
-          - name: policyNumber
-            in: path
-            required: true
-            schema:
-              type: string
-          - name: associatedFirmId
-            in: query
-            required: false
-            schema:
-              type: string
+  /v1/activity-statuses/policies/{policyNumber}/fundings:
     get:
       operationId: getFundingStatusByPolicyNumber
       summary: Retrieve policy funding data
       description: Retrieve funding data of a policy.
       tags:
         - Policy
+      parameters:
+        - $ref: '#/components/parameters/correlationId'
+        - $ref: '#/components/parameters/senderParticipantId'
+        - $ref: '#/components/parameters/receiverParticipantId'
+        - $ref: '#/components/parameters/brokerNumber'
+        - $ref: '#/components/parameters/policyNumberRequired'
+        - $ref: '#/components/parameters/associatedFirmId'
       responses:
         "200":
           description: Policy funding successfully retrieved
@@ -290,24 +241,20 @@ paths:
           description: Forbidden
         "404":
           description: NotFound
-  /v1/policies/{policyNumber}/document-reviews:
-    parameters:
-          - name: policyNumber
-            in: path
-            required: true
-            schema:
-              type: string
-          - name: associatedFirmId
-            in: query
-            required: false
-            schema:
-              type: string
+  /v1/activity-statuses/policies/{policyNumber}/document-reviews:
     get:
       operationId: getDocumentReviewStatusByPolicyNumber
       summary: Retrieve policy document review data
       description: Retrieve document review data of a policy.
       tags:
         - Policy
+      parameters:
+        - $ref: '#/components/parameters/correlationId'
+        - $ref: '#/components/parameters/senderParticipantId'
+        - $ref: '#/components/parameters/receiverParticipantId'
+        - $ref: '#/components/parameters/brokerNumber'
+        - $ref: '#/components/parameters/policyNumberRequired'
+        - $ref: '#/components/parameters/associatedFirmId'
       responses:
         "200":
           description: Policy document review successfully retrieved
@@ -321,24 +268,20 @@ paths:
           description: Forbidden
         "404":
           description: NotFound
-  /v1/policies/{policyNumber}/suitability:
-    parameters:
-          - name: policyNumber
-            in: path
-            required: true
-            schema:
-              type: string
-          - name: associatedFirmId
-            in: query
-            required: false
-            schema:
-              type: string
+  /v1/activity-statuses/policies/{policyNumber}/suitability:
     get:
       operationId: getSuitabilityInformationByPolicyNumber
       summary: Retrieve policy suitability data
       description: Retrieve suitability data of a policy.
       tags:
         - Policy
+      parameters:
+        - $ref: '#/components/parameters/correlationId'
+        - $ref: '#/components/parameters/senderParticipantId'
+        - $ref: '#/components/parameters/receiverParticipantId'
+        - $ref: '#/components/parameters/brokerNumber'
+        - $ref: '#/components/parameters/policyNumberRequired'
+        - $ref: '#/components/parameters/associatedFirmId'
       responses:
         "200":
           description: Policy suitability successfully retrieved
@@ -352,24 +295,20 @@ paths:
           description: Forbidden
         "404":
           description: NotFound
-  /v1/policies/{policyNumber}/can-sell-validations:
-    parameters:
-          - name: policyNumber
-            in: path
-            required: true
-            schema:
-              type: string
-          - name: associatedFirmId
-            in: query
-            required: false
-            schema:
-              type: string
+  /v1/activity-statuses/policies/{policyNumber}/can-sell-validations:
     get:
       operationId: getCanSellValidationByPolicyNumber
       summary: Retrieve policy can sell validation data
       description: Retrieve can sell valiation data of a policy.
       tags:
         - Policy
+      parameters:
+        - $ref: '#/components/parameters/correlationId'
+        - $ref: '#/components/parameters/senderParticipantId'
+        - $ref: '#/components/parameters/receiverParticipantId'
+        - $ref: '#/components/parameters/brokerNumber'
+        - $ref: '#/components/parameters/policyNumberRequired'
+        - $ref: '#/components/parameters/associatedFirmId'
       responses:
         "200":
           description: Policy can sell validation successfully retrieved
@@ -384,28 +323,141 @@ paths:
         "404":
           description: NotFound
 components:
+  parameters:
+    correlationId:
+      name: correlationId
+      description: Optional custom header to be returned to the caller in response payload
+      in: header
+      required: false
+      schema:
+        type: string
+    senderParticipantId:
+      name: senderParticipantId
+      description: Optional custom header identifying the sender of the call
+      in: header
+      required: false
+      schema:
+        type: string
+    receiverParticipantId:
+      name: receiverParticipantId
+      description: Optional custom header identifying the receiver of the call
+      in: header
+      required: false
+      schema:
+        type: string
+    brokerNumber:
+      name: brokerNumber
+      description: Optional custom header identifying the broker number of the call
+      in: header
+      required: false
+      schema:
+        type: string
+    policyNumberRequired:
+      name: policyNumber
+      description: Required query parameter for the policy number to be retrieved
+      in: query
+      required: false
+      schema:
+        type: string
+    policyNumber:
+      name: policyNumber
+      in: query
+      required: false
+      schema:
+        type: string
+    associatedFirmId:
+      name: associatedFirmId
+      description: Optional query parameter for the associated firm ID
+      in: query
+      required: false
+      schema:
+        type: string
+    cusip:
+      name: cusip
+      description: Optional query parameter for the CUSIP
+      in: query
+      required: false
+      schema:
+        type: string
+    producerNumber:
+      name: producerNumber
+      description: Optional query parameter for the producer number
+      in: query
+      required: false
+      schema:
+        type: string
+    npn:
+      name: npn
+      description: Optional query parameter for the NPN
+      in: query
+      required: false
+      schema:
+        type: string
+    crdNumber:
+      name: crdNumber
+      description: Optional query parameter for the CRD number
+      in: query
+      required: false
+      schema:
+        type: string
+    partyTaxId:
+      name: partyTaxId
+      description: Optional query parameter for the party tax ID
+      in: query
+      required: false
+      schema:
+        type: string
+    applicationOriginId:
+      name: applicationOriginId
+      description: Optional query parameter for the application origin ID
+      in: query
+      required: false
+      schema:
+        type: string
+    trackingNumber:
+      name: trackingNumber
+      description: Optional query parameter for the delivery tracking number
+      in: query
+      required: false
+      schema:
+        type: string
+    orderBy:
+      name: orderBy
+      description: Order by for pagination
+      in: query
+      required: false
+      schema:
+        type: string
+        enum: [policyNumber, status]
+        default: policyNumber
+    sortOrder:
+      name: sortOrder
+      description: Sort order for pagination
+      in: query
+      required: false
+      schema:
+        type: string
+        enum: [asc, desc]
+        default: asc
+    start:
+      name: start
+      description: Starting item for pagination
+      in: query
+      required: false
+      schema:
+        type: integer
+        default: 1
+    limit:
+      name: limit
+      description: Number of items returned
+      in: query
+      required: false
+      schema:
+        type: integer
+        default: 100
+        minimum: 1
+        maximum: 1000
   schemas:
-    SearchRequest:
-      description: Schema for search request data
-      type: object
-      properties:
-        policyNumber:
-          type: string
-        applicationNumber:
-          type: string
-        associatedFirmId:
-          type: string
-        cusip:
-          type: string
-        producerNumber:
-          type: string
-        npn: 
-          type: string
-        crdNumber:
-          type: string
-        partyTaxId:
-          type: string
-      additionalProperties: false
     IndividualIdentity:
       description: Schema for individual identity data
       type: object
@@ -714,13 +766,13 @@ components:
                   note:
                     type: string
 
-    Policy:
-      description: Schema for policy data
+    PolicySummary:
+      description: Schema for policy summary data
       type: object
       properties:
-        correlationId:
-          type: string
         policyNumber:
+          type: string
+        associatedFirmId:
           type: string
         applicationOrigin:
           type: object
@@ -733,9 +785,35 @@ components:
               type: string
         cusip:
           type: string
+        productName:
+          type: string
+        isQualified:
+          type: boolean
         status:
           type: string
           enum: [received, inProgress, completed, cancelled]
+        delivery:
+          type: object
+          properties:
+            sentDate:
+              type: string
+              format: date
+            method:
+              type: string
+              enum:
+                - fedex
+                - ups
+                - electronicDelivery
+                - handDelivery
+                - usps
+            trackingNumber:
+              type: string
+    Policy:
+      description: Schema for policy data
+      type: object
+      allOf:
+        - $ref: '#/components/schemas/PolicySummary'
+      properties:
         isActionNeeded:
           type: boolean
         actionSections:
@@ -770,22 +848,6 @@ components:
               format: date
             reason:
               type: string
-        delivery:
-          type: object
-          properties:
-            sentDate:
-              type: string
-              format: date
-            method:
-              type: string
-              enum:
-                - fedex
-                - ups
-                - electronicDelivery
-                - handDelivery
-                - usps
-            trackingNumber:
-              type: string
         caseManager:
           type: object
           properties:
@@ -802,7 +864,7 @@ components:
       type: array
       items:
         allOf:
-          - $ref: '#/components/schemas/Policy'
+          - $ref: '#/components/schemas/PolicySummary'
           - type: object
     PoliciesPagedResult:
       description: Schema for the paged result of policies
@@ -814,12 +876,18 @@ components:
           type: integer
         totalItemsCount:
           type: integer
+          maxValue: 1000
         policies:
           $ref: "#/components/schemas/Policies"
-    ActivityStatus:
-      description: Schema for activity status
+    DetailActivityStatus:
+      description: Schema for detail activity status
       type: object
       allOf:
+        - type: object
+          properties:
+            correlationId:
+              type: string
+              description: Correlation ID for tracking the request    
         - $ref: '#/components/schemas/Policy'
         - type: object
           properties:
@@ -835,22 +903,59 @@ components:
               $ref: "#/components/schemas/Suitability"
             fundings:
               $ref: "#/components/schemas/Funding"
-    ActivityStatuses:
+    SummaryActivityStatus:
+      description: Schema for summary activity status
+      type: object
+      allOf:
+        - $ref: '#/components/schemas/PolicySummary'
+        - type: object
+          properties:
+            producers:
+              $ref: "#/components/schemas/Producers"
+            parties:
+              $ref: "#/components/schemas/Parties"
+    SummaryActivityStatuses:
       description: Schema for activity statuses
       type: array
       items:
         allOf:
-          - $ref: '#/components/schemas/ActivityStatus'
+          - $ref: '#/components/schemas/SummaryActivityStatus'
           - type: object
-    ActivityStatusesPagedResult:
+    SummaryActivityStatusesPagedResult:
       description: Schema for the paged result of activity statuses
       type: object
       properties:
+        correlationId:
+          type: string
         startIndex:
           type: integer
         itemsCount:
           type: integer
+          maxValue: 1000
         totalItemsCount:
           type: integer
         activityStatuses:
-          $ref: "#/components/schemas/ActivityStatuses"
+          $ref: "#/components/schemas/SummaryActivityStatuses"
+    SearchSummaryActivityStatusesRequest:
+      description: Schema for searching summary activity statuses
+      type: object
+      properties:
+        policyNumber:
+          type: string
+        associatedFirmId:
+          type: string
+        cusip:
+          type: string
+        producerNumber:
+          type: string
+        npn: 
+          type: string
+        crdNumber:
+          type: string
+        partyTaxId:
+          type: string
+        applicationOriginId:
+          type: string
+        trackingNumber:
+          type: string
+      additionalProperties: false
