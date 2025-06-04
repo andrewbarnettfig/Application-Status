@@ -380,8 +380,8 @@ components:
       required: false
       schema:
         type: string
-          minLength: 1
-          maxLength: 65
+        minLength: 1
+        maxLength: 65
     cusip:
       name: cusip
       description: Optional query parameter for the CUSIP
@@ -389,9 +389,9 @@ components:
       required: false
       schema:
         type: string
-          minLength: 9
-          maxLength: 9
-          pattern: (^[a-zA-Z0-9](9)$)
+        minLength: 9
+        maxLength: 9
+        pattern: (^[a-zA-Z0-9](9)$)
     producerNumber:
       name: producerNumber
       description: Optional query parameter for the producer number
@@ -991,7 +991,7 @@ components:
           type: integer
         totalItemsCount:
           type: integer
-          maxValue: 1000
+          maximum: 1000
         policies:
           $ref: "#/components/schemas/Policies"
     DetailActivityStatus:
@@ -1046,7 +1046,7 @@ components:
           type: integer
         itemsCount:
           type: integer
-          maxValue: 1000
+          maximum: 1000
         totalItemsCount:
           type: integer
         activityStatuses:
