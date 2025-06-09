@@ -1,19 +1,19 @@
 openapi: 3.1.0
 info:
-  title: Insurance Policy and Activity Status APIs
+  title: Insurance Policy and Application Status APIs
   description: APIs for managing insurance policy data including activity status, details, transmission, agents, parties, funding, documents, and more.
   version: 1.0.0
   license:
     name: MIT
     url: https://github.com/Insured-Retirement-Institute/Pending-Case/blob/main/LICENSE
 paths:
-  /v1/activity-statuses/searches:
+  /v1/application-statuses/searches:
     post:
-      operationId: postActivityStatusSearch
-      summary: Search for summary activity statuses
-      description: Retrieve summary activity statuses based on search criteria.
+      operationId: postApplicationStatusSearch
+      summary: Search for summary application statuses
+      description: Retrieve summary application statuses based on search criteria.
       tags:
-        - Activity Status
+        - Application Status
       parameters:
         - $ref: '#/components/parameters/correlationId'
         - $ref: '#/components/parameters/senderParticipantId'
@@ -27,19 +27,19 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/SearchSummaryActivityStatusesRequest'
+              $ref: '#/components/schemas/SearchSummaryApplicationStatusesRequest'
       responses:
         "200":
-          description: Policy activity statuses successfully retrieved
+          description: Policy application statuses successfully retrieved
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/SummaryActivityStatusesPagedResult"
+                $ref: "#/components/schemas/SummaryApplicationStatusesPagedResult"
         "401":
           description: Unauthorized
-  /v1/activity-statuses:
+  /v1/application-statuses:
     get:
-      operationId: getActivityStatuses
+      operationId: getApplicationStatuses
       summary: Retrieve summary activity statuses 
       description: Retrieve all summary activity statuses.
       tags:
