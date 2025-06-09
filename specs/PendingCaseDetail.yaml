@@ -1,7 +1,7 @@
 openapi: 3.1.0
 info:
   title: Insurance Policy and Application Status APIs
-  description: APIs for managing insurance policy data including activity status, details, transmission, agents, parties, funding, documents, and more.
+  description: APIs for managing insurance policy data including application status, details, transmission, agents, parties, funding, documents, and more.
   version: 1.0.0
   license:
     name: MIT
@@ -40,10 +40,10 @@ paths:
   /v1/application-statuses:
     get:
       operationId: getApplicationStatuses
-      summary: Retrieve summary activity statuses 
-      description: Retrieve all summary activity statuses.
+      summary: Retrieve summary application statuses 
+      description: Retrieve all summary application statuses.
       tags:
-        - Activity Status
+        - Application Status
       parameters:
         - $ref: '#/components/parameters/correlationId'
         - $ref: '#/components/parameters/senderParticipantId'
@@ -64,20 +64,20 @@ paths:
         - $ref: '#/components/parameters/limit'
       responses:
         "200":
-          description: Policy activity statuses successfully retrieved
+          description: Policy application statuses successfully retrieved
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/SummaryActivityStatusesPagedResult"
+                $ref: "#/components/schemas/SummaryApplicationStatusesPagedResult"
         "401":
           description: Unauthorized
-  /v1/activity-statuses/{policyNumber}:
+  /v1/application-statuses/{policyNumber}:
     get:
-      operationId: getActivityStatusByPolicyNumber
-      summary: Retrieve a detail activity status
-      description: Retrieve a detail activity status.
+      operationId: getApplicationStatusByPolicyNumber
+      summary: Retrieve a detail application status
+      description: Retrieve a detail application status.
       tags:
-        - Activity Status
+        - Application Status
       parameters:
         - $ref: '#/components/parameters/correlationId'
         - $ref: '#/components/parameters/senderParticipantId'
@@ -87,18 +87,18 @@ paths:
         - $ref: '#/components/parameters/associatedFirmId'
       responses:
         "200":
-          description: Policy activity status successfully retrieved
+          description: Policy application status successfully retrieved
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/DetailActivityStatus"
+                $ref: "#/components/schemas/DetailApplicationStatus"
         "401":
           description: Unauthorized
         "403":
           description: Forbidden
         "404":
           description: NotFound
-  /v1/activity-statuses/policies:
+  /v1/application-statuses/policies:
     get:
       operationId: getPolicies
       summary: Retrieve policies
@@ -134,7 +134,7 @@ paths:
           description: Unauthorized
         "403":
           description: Forbidden
-  /v1/activity-statuses/policies/{policyNumber}:
+  /v1/application-statuses/policies/{policyNumber}:
     get:
       operationId: getPolicyByPolicyNumber
       summary: Retrieve a policy
@@ -161,7 +161,7 @@ paths:
           description: Forbidden
         "404":
           description: NotFound
-  /v1/activity-statuses/policies/{policyNumber}/producers:
+  /v1/application-statuses/policies/{policyNumber}/producers:
     get:
       operationId: getPolicyProducersByPolicyNumber
       summary: Retrieve the producers of a policy
@@ -187,7 +187,7 @@ paths:
           description: Forbidden
         "404":
           description: NotFound
-  /v1/activity-statuses/policies/{policyNumber}/parties:
+  /v1/application-statuses/policies/{policyNumber}/parties:
     get:
       operationId: getPolicyPartiesByPolicyNumber
       summary: Retrieve the parties of a policy
@@ -214,7 +214,7 @@ paths:
           description: Forbidden
         "404":
           description: NotFound
-  /v1/activity-statuses/policies/{policyNumber}/fundings:
+  /v1/application-statuses/policies/{policyNumber}/fundings:
     get:
       operationId: getFundingStatusByPolicyNumber
       summary: Retrieve policy funding data
@@ -241,7 +241,7 @@ paths:
           description: Forbidden
         "404":
           description: NotFound
-  /v1/activity-statuses/policies/{policyNumber}/document-reviews:
+  /v1/application-statuses/policies/{policyNumber}/document-reviews:
     get:
       operationId: getDocumentReviewStatusByPolicyNumber
       summary: Retrieve policy document review data
@@ -268,7 +268,7 @@ paths:
           description: Forbidden
         "404":
           description: NotFound
-  /v1/activity-statuses/policies/{policyNumber}/suitability:
+  /v1/application-statuses/policies/{policyNumber}/suitability:
     get:
       operationId: getSuitabilityInformationByPolicyNumber
       summary: Retrieve policy suitability data
@@ -295,7 +295,7 @@ paths:
           description: Forbidden
         "404":
           description: NotFound
-  /v1/activity-statuses/policies/{policyNumber}/can-sell-validations:
+  /v1/application-statuses/policies/{policyNumber}/can-sell-validations:
     get:
       operationId: getCanSellValidationByPolicyNumber
       summary: Retrieve policy can sell validation data
@@ -837,7 +837,7 @@ components:
                     format: date
                   referenceNumber:
                     type: string
-                  nextActivityDate:
+                  nextApplicationDate:
                     type: string
                     format: date
                   note:
@@ -994,8 +994,8 @@ components:
           maximum: 1000
         policies:
           $ref: "#/components/schemas/Policies"
-    DetailActivityStatus:
-      description: Schema for detail activity status
+    DetailApplicationStatus:
+      description: Schema for detail application status
       type: object
       allOf:
         - type: object
@@ -1018,8 +1018,8 @@ components:
               $ref: "#/components/schemas/Suitability"
             fundings:
               $ref: "#/components/schemas/Funding"
-    SummaryActivityStatus:
-      description: Schema for summary activity status
+    SummaryApplicationStatus:
+      description: Schema for summary application status
       type: object
       allOf:
         - $ref: '#/components/schemas/PolicySummary'
@@ -1029,15 +1029,15 @@ components:
               $ref: "#/components/schemas/Producers"
             parties:
               $ref: "#/components/schemas/Parties"
-    SummaryActivityStatuses:
-      description: Schema for activity statuses
+    SummaryApplicationStatuses:
+      description: Schema for application statuses
       type: array
       items:
         allOf:
-          - $ref: '#/components/schemas/SummaryActivityStatus'
+          - $ref: '#/components/schemas/SummaryApplicationStatus'
           - type: object
-    SummaryActivityStatusesPagedResult:
-      description: Schema for the paged result of activity statuses
+    SummaryApplicationStatusesPagedResult:
+      description: Schema for the paged result of application statuses
       type: object
       properties:
         correlationId:
@@ -1049,10 +1049,10 @@ components:
           maximum: 1000
         totalItemsCount:
           type: integer
-        activityStatuses:
-          $ref: "#/components/schemas/SummaryActivityStatuses"
-    SearchSummaryActivityStatusesRequest:
-      description: Schema for searching summary activity statuses
+        applicationStatuses:
+          $ref: "#/components/schemas/SummaryApplicationStatuses"
+    SearchSummaryApplicationStatusesRequest:
+      description: Schema for searching summary application statuses
       type: object
       properties:
         policyNumber:
