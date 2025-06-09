@@ -1,7 +1,7 @@
 openapi: 3.1.0
 info:
-  title: Insurance Policy and Application Status APIs
-  description: APIs for managing insurance policy data including application status, details, transmission, agents, parties, funding, documents, and more.
+  title: Insurance Policy Application Status APIs
+  description: APIs for managing insurance policy application data including application status, details, transmission, agents, parties, funding, documents, and more.
   version: 1.0.0
   license:
     name: MIT
@@ -519,8 +519,8 @@ components:
               type: array
               items:
                 type: string
-                minLength: 1
-                maxLength: 30
+                minItems: 1
+                maxItems: 30
                 enum:
                   - primaryAgent
                   - secondaryAgent
@@ -563,8 +563,8 @@ components:
               maxLength: 10
             relationships:
               type: array
-              minLength: 1
-              maxLength: 25
+              minItems: 1
+              maxItems: 25
               items:
                 type: string
                 enum:
@@ -584,8 +584,8 @@ components:
       properties:
         relationships:
           type: array
-          minLength: 1
-          maxLength: 2
+          minItems: 1
+          maxItems: 2
           items:
             type: string
             enum:
@@ -605,7 +605,7 @@ components:
     Parties:  
       description: Schema for parties data
       type: array
-      minLength: 1
+      minItems: 1
       items:
         anyOf:
           - $ref: "#/components/schemas/IndividualParty"
