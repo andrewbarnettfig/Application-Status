@@ -1,19 +1,19 @@
 openapi: 3.1.0
 info:
-  title: Insurance Policy and Activity Status APIs
-  description: APIs for managing insurance policy data including activity status, details, transmission, agents, parties, funding, documents, and more.
+  title: Insurance Policy Application Status APIs
+  description: APIs for managing insurance policy application data including application status, details, transmission, agents, parties, funding, documents, and more.
   version: 1.0.0
   license:
     name: MIT
     url: https://github.com/Insured-Retirement-Institute/Pending-Case/blob/main/LICENSE
 paths:
-  /v1/activity-statuses/searches:
+  /v1/application-statuses/searches:
     post:
-      operationId: postActivityStatusSearch
-      summary: Search for summary activity statuses
-      description: Retrieve summary activity statuses based on search criteria.
+      operationId: postApplicationStatusSearch
+      summary: Search for summary application statuses
+      description: Retrieve summary application statuses based on search criteria.
       tags:
-        - Activity Status
+        - Application Status
       parameters:
         - $ref: '#/components/parameters/correlationId'
         - $ref: '#/components/parameters/senderParticipantId'
@@ -27,23 +27,23 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/SearchSummaryActivityStatusesRequest'
+              $ref: '#/components/schemas/SearchSummaryApplicationStatusesRequest'
       responses:
         "200":
-          description: Policy activity statuses successfully retrieved
+          description: Policy application statuses successfully retrieved
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/SummaryActivityStatusesPagedResult"
+                $ref: "#/components/schemas/SummaryApplicationStatusesPagedResult"
         "401":
           description: Unauthorized
-  /v1/activity-statuses:
+  /v1/application-statuses:
     get:
-      operationId: getActivityStatuses
-      summary: Retrieve summary activity statuses 
-      description: Retrieve all summary activity statuses.
+      operationId: getApplicationStatuses
+      summary: Retrieve summary application statuses 
+      description: Retrieve all summary application statuses.
       tags:
-        - Activity Status
+        - Application Status
       parameters:
         - $ref: '#/components/parameters/correlationId'
         - $ref: '#/components/parameters/senderParticipantId'
@@ -64,20 +64,20 @@ paths:
         - $ref: '#/components/parameters/limit'
       responses:
         "200":
-          description: Policy activity statuses successfully retrieved
+          description: Policy application statuses successfully retrieved
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/SummaryActivityStatusesPagedResult"
+                $ref: "#/components/schemas/SummaryApplicationStatusesPagedResult"
         "401":
           description: Unauthorized
-  /v1/activity-statuses/{policyNumber}:
+  /v1/application-statuses/{policyNumber}:
     get:
-      operationId: getActivityStatusByPolicyNumber
-      summary: Retrieve a detail activity status
-      description: Retrieve a detail activity status.
+      operationId: getApplicationStatusByPolicyNumber
+      summary: Retrieve a detail application status
+      description: Retrieve a detail application status.
       tags:
-        - Activity Status
+        - Application Status
       parameters:
         - $ref: '#/components/parameters/correlationId'
         - $ref: '#/components/parameters/senderParticipantId'
@@ -87,18 +87,18 @@ paths:
         - $ref: '#/components/parameters/associatedFirmId'
       responses:
         "200":
-          description: Policy activity status successfully retrieved
+          description: Policy application status successfully retrieved
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/DetailActivityStatus"
+                $ref: "#/components/schemas/DetailApplicationStatus"
         "401":
           description: Unauthorized
         "403":
           description: Forbidden
         "404":
           description: NotFound
-  /v1/activity-statuses/policies:
+  /v1/application-statuses/policies:
     get:
       operationId: getPolicies
       summary: Retrieve policies
@@ -134,7 +134,7 @@ paths:
           description: Unauthorized
         "403":
           description: Forbidden
-  /v1/activity-statuses/policies/{policyNumber}:
+  /v1/application-statuses/policies/{policyNumber}:
     get:
       operationId: getPolicyByPolicyNumber
       summary: Retrieve a policy
@@ -161,7 +161,7 @@ paths:
           description: Forbidden
         "404":
           description: NotFound
-  /v1/activity-statuses/policies/{policyNumber}/producers:
+  /v1/application-statuses/policies/{policyNumber}/producers:
     get:
       operationId: getPolicyProducersByPolicyNumber
       summary: Retrieve the producers of a policy
@@ -187,7 +187,7 @@ paths:
           description: Forbidden
         "404":
           description: NotFound
-  /v1/activity-statuses/policies/{policyNumber}/parties:
+  /v1/application-statuses/policies/{policyNumber}/parties:
     get:
       operationId: getPolicyPartiesByPolicyNumber
       summary: Retrieve the parties of a policy
@@ -214,7 +214,7 @@ paths:
           description: Forbidden
         "404":
           description: NotFound
-  /v1/activity-statuses/policies/{policyNumber}/fundings:
+  /v1/application-statuses/policies/{policyNumber}/fundings:
     get:
       operationId: getFundingStatusByPolicyNumber
       summary: Retrieve policy funding data
@@ -241,7 +241,7 @@ paths:
           description: Forbidden
         "404":
           description: NotFound
-  /v1/activity-statuses/policies/{policyNumber}/document-reviews:
+  /v1/application-statuses/policies/{policyNumber}/document-reviews:
     get:
       operationId: getDocumentReviewStatusByPolicyNumber
       summary: Retrieve policy document review data
@@ -268,7 +268,7 @@ paths:
           description: Forbidden
         "404":
           description: NotFound
-  /v1/activity-statuses/policies/{policyNumber}/suitability:
+  /v1/application-statuses/policies/{policyNumber}/suitability:
     get:
       operationId: getSuitabilityInformationByPolicyNumber
       summary: Retrieve policy suitability data
@@ -295,7 +295,7 @@ paths:
           description: Forbidden
         "404":
           description: NotFound
-  /v1/activity-statuses/policies/{policyNumber}/can-sell-validations:
+  /v1/application-statuses/policies/{policyNumber}/can-sell-validations:
     get:
       operationId: getCanSellValidationByPolicyNumber
       summary: Retrieve policy can sell validation data
@@ -338,6 +338,9 @@ components:
       required: false
       schema:
         type: string
+        minLength: 8
+        maxLength: 8
+        pattern: (^[0-9]{8}$)(?<!^0+$)
     receiverParticipantId:
       name: receiverParticipantId
       description: Optional custom header identifying the receiver of the call
@@ -345,6 +348,9 @@ components:
       required: false
       schema:
         type: string
+        minLength: 8
+        maxLength: 8
+        pattern: (^[0-9]{8}$)(?<!^0+$)
     brokerNumber:
       name: brokerNumber
       description: Optional custom header identifying the broker number of the call
@@ -365,6 +371,8 @@ components:
       required: false
       schema:
         type: string
+        minLength: 1
+        maxLength: 30
     associatedFirmId:
       name: associatedFirmId
       description: Optional query parameter for the associated firm ID
@@ -372,6 +380,8 @@ components:
       required: false
       schema:
         type: string
+        minLength: 1
+        maxLength: 65
     cusip:
       name: cusip
       description: Optional query parameter for the CUSIP
@@ -379,6 +389,9 @@ components:
       required: false
       schema:
         type: string
+        minLength: 9
+        maxLength: 9
+        pattern: (^[a-zA-Z0-9](9)$)
     producerNumber:
       name: producerNumber
       description: Optional query parameter for the producer number
@@ -386,6 +399,7 @@ components:
       required: false
       schema:
         type: string
+        maxLength: 30
     npn:
       name: npn
       description: Optional query parameter for the NPN
@@ -393,6 +407,7 @@ components:
       required: false
       schema:
         type: string
+        maxLength: 10
     crdNumber:
       name: crdNumber
       description: Optional query parameter for the CRD number
@@ -400,6 +415,7 @@ components:
       required: false
       schema:
         type: string
+        maxLength: 10
     partyTaxId:
       name: partyTaxId
       description: Optional query parameter for the party tax ID
@@ -407,6 +423,7 @@ components:
       required: false
       schema:
         type: string
+        maxLength: 9
     applicationOriginId:
       name: applicationOriginId
       description: Optional query parameter for the application origin ID
@@ -460,6 +477,7 @@ components:
   schemas:
     IndividualIdentity:
       description: Schema for individual identity data
+      required: [firstName,lastName]
       type: object
       properties:
         type:
@@ -467,25 +485,40 @@ components:
           const: individual
         firstName:
           type: string
+          minLength: 1
+          maxLength: 105
+          pattern: ^[a-zA-Z0-9=()=*@#\\s.,'_/~%$!();:&amp;&quot;+&#x00ae;®`\\-\\\\?\"=]{1,105}
         middleName:
           type: string
+          minLength: 1
+          maxLength: 105
+          pattern: ^[a-zA-Z0-9=()=*@#\\s.,'_/~%$!();:&amp;&quot;+&#x00ae;®`\\-\\\\?\"=]{1,105}
         lastName:
           type: string
+          minLength: 1
+          maxLength: 105
+          pattern: ^[a-zA-Z0-9=()=*@#\\s.,'_/~%$!();:&amp;&quot;+&#x00ae;®`\\-\\\\?\"=]{1,105}
         taxId:
           type: string
+          maxLength: 9
     IndividualProducer:
       description: Schema for individual producer data
       type: object
+      required: [relationships]
       allOf:
         - $ref: "#/components/schemas/IndividualIdentity"
         - type: object
           properties:
             npn:
               type: string
+              maxLength: 10
             crdNumber:
               type: string
+              maxLength: 10
             relationships:
               type: array
+              minItems: 1
+              maxItems: 30
               items:
                 type: string
                 enum:
@@ -502,27 +535,36 @@ components:
     EntityIdentity:
       description: Schema for entity identity data
       type: object
+      required: [type, name]
       properties:
         type:
           type: string
           const: entity
         name:
           type: string
+          minLength: 1
+          maxLength: 180
+          pattern: ^[a-zA-Z0-9=()=*@#\\s.,'_/~%$!();:&amp;&quot;+&#x00ae;®`\\-\\\\?\"=]{1,180} 
         taxId:
           type: string
     EntityProducer:
       description: Schema for entity producer data
       type: object
+      required: [relationships]
       allOf:
         - $ref: "#/components/schemas/EntityIdentity"
         - type: object
           properties:
             npn:
               type: string
+              maxLength: 10
             crdNumber:
               type: string
+              maxLength: 10
             relationships:
               type: array
+              minItems: 1
+              maxItems: 25
               items:
                 type: string
                 enum:
@@ -538,9 +580,12 @@ components:
     PartyRelationship:
       description: Schema for party relationship data
       type: object
+      required: [relationships]
       properties:
         relationships:
           type: array
+          minItems: 1
+          maxItems: 2
           items:
             type: string
             enum:
@@ -560,6 +605,7 @@ components:
     Parties:  
       description: Schema for parties data
       type: array
+      minItems: 1
       items:
         anyOf:
           - $ref: "#/components/schemas/IndividualParty"
@@ -567,6 +613,7 @@ components:
     CanSellValidation:
       description: Schema for policy can sell validation data
       type: object
+      required: [status,isActionNeeded]
       properties:
         status:
           type: string
@@ -581,10 +628,13 @@ components:
           format: date
         note:
           type: string
+          minLength: 1
+          maxLength: 2000
         issues:
           type: array
           items:
             type: object
+            required: [type]
             properties:
               type:
                 type: string
@@ -597,18 +647,24 @@ components:
                   - other
               note:
                 type: string
+                minLength: 1
+                maxLength: 2000
               affectedProducer:
                 type: object
                 properties:
                   npn:
                     type: string
+                    maxLength: 10
                   crdNumber:
                     type: string
+                    maxLength: 10
                   taxId:
                     type: string
+                    maxLength: 9
     Suitability:
       description: Schema for policy suitability data
       type: object
+      required: [status,isActionNeeded]
       properties:
         status:
           type: string
@@ -629,12 +685,15 @@ components:
             - other
         note:
           type: string
+          minLength: 1
+          maxLength: 2000
         dueDate:
           type: string
           format: date
     DocumentReview:
       description: Schema for policy document review data
       type: object
+      required: [status,isActionNeeded]
       properties:
         status:
           type: string
@@ -649,6 +708,8 @@ components:
           format: date
         note:
           type: string
+          minLength: 1
+          maxLength: 2000
         issues:
           type: array
           items:
@@ -666,16 +727,23 @@ components:
                   - other
               formName:
                 type: string
+                minLength: 1
+                maxLength: 200
               formNumber:
                 type: string
+                minLength: 1
+                maxLength: 100
               dueDate:
                 type: string
                 format: date
               note:
                 type: string
+                minLength: 1
+                maxLength: 2000
     Funding:
       description: Schema for policy funding data
       type: object
+      required: [isActionNeeded, status]  
       properties:
         startDate:
           type: string
@@ -690,10 +758,13 @@ components:
           enum: [awaitingReview, inProgress, completed]
         note:
           type: string
+          minLength: 1
+          maxLength: 2000
         sources:
           type: array
           items:
             type: object
+            required: [method,type]
             properties:
               method:
                 type: string
@@ -748,11 +819,17 @@ components:
                 format: date
               note:
                 type: string
+                minLength: 1
+                maxLength: 2000
               cedingCompany:
                 type: object
+                required: [name, accountNumber]
                 properties:
                   name:
                     type: string
+                    minLength: 1
+                    maxLength: 180
+                    pattern:  ^[a-zA-Z0-9=()=*@#\\s.,'_/~%$!();:&amp;&quot;+&#x00ae;®`\\-\\\\?\"=]{1,180}
                   accountNumber:
                     type: string
                   startDate:
@@ -760,18 +837,23 @@ components:
                     format: date
                   referenceNumber:
                     type: string
-                  nextActivityDate:
+                  nextApplicationDate:
                     type: string
                     format: date
                   note:
                     type: string
+                    minLength: 1
+                    maxLength: 2000
 
     PolicySummary:
       description: Schema for policy summary data
       type: object
+      required: [policyNumber,applicationOrigin,cusip,status,isActionNeeded,signedDate]
       properties:
         policyNumber:
           type: string
+          minLength: 1
+          maxLength: 30
         associatedFirmId:
           type: string
         applicationOrigin:
@@ -779,14 +861,20 @@ components:
           properties:
             platform:
               type: string
+              maxLength: 50
             isElectronic:
               type: boolean
             id:
               type: string
+              maxLength: 65
         cusip:
           type: string
+          minLength: 9
+          maxLength: 9
+          pattern: (^[a-zA-Z0-9](9)$)
         productName:
           type: string
+          maxLength: 180
         isQualified:
           type: boolean
         status:
@@ -839,6 +927,7 @@ components:
           format: date
         cancellation:
           type: object
+          required: [initiator,cancelledDate]
           properties:
             initiator:
               type: string
@@ -848,13 +937,39 @@ components:
               format: date
             reason:
               type: string
+              minLength: 1
+              maxLength: 2000
+        delivery:
+          type: object
+          properties:
+            sentDate:
+              type: string
+              format: date
+            method:
+              type: string
+              enum:
+                - fedex
+                - ups
+                - electronicDelivery
+                - handDelivery
+                - usps
+            trackingNumber:
+              type: string
+              minLength: 1
+              maxLength: 65
         caseManager:
           type: object
+          required: [fullName, phoneNumber]
           properties:
             fullName:
               type: string
+              minLength: 1
+              maxLength: 180
+              pattern:  ^[a-zA-Z0-9=()=*@#\\s.,'_/~%$!();:&amp;&quot;+&#x00ae;®`\\-\\\\?\"=]{1,180}
             phoneNumber:
               type: string
+              minLength: 10
+              maxLength: 15
             emailAddress:
               type: string
             websiteURL:
@@ -876,11 +991,11 @@ components:
           type: integer
         totalItemsCount:
           type: integer
-          maxValue: 1000
+          maximum: 1000
         policies:
           $ref: "#/components/schemas/Policies"
-    DetailActivityStatus:
-      description: Schema for detail activity status
+    DetailApplicationStatus:
+      description: Schema for detail application status
       type: object
       allOf:
         - type: object
@@ -903,8 +1018,8 @@ components:
               $ref: "#/components/schemas/Suitability"
             fundings:
               $ref: "#/components/schemas/Funding"
-    SummaryActivityStatus:
-      description: Schema for summary activity status
+    SummaryApplicationStatus:
+      description: Schema for summary application status
       type: object
       allOf:
         - $ref: '#/components/schemas/PolicySummary'
@@ -914,15 +1029,15 @@ components:
               $ref: "#/components/schemas/Producers"
             parties:
               $ref: "#/components/schemas/Parties"
-    SummaryActivityStatuses:
-      description: Schema for activity statuses
+    SummaryApplicationStatuses:
+      description: Schema for application statuses
       type: array
       items:
         allOf:
-          - $ref: '#/components/schemas/SummaryActivityStatus'
+          - $ref: '#/components/schemas/SummaryApplicationStatus'
           - type: object
-    SummaryActivityStatusesPagedResult:
-      description: Schema for the paged result of activity statuses
+    SummaryApplicationStatusesPagedResult:
+      description: Schema for the paged result of application statuses
       type: object
       properties:
         correlationId:
@@ -931,31 +1046,44 @@ components:
           type: integer
         itemsCount:
           type: integer
-          maxValue: 1000
+          maximum: 1000
         totalItemsCount:
           type: integer
-        activityStatuses:
-          $ref: "#/components/schemas/SummaryActivityStatuses"
-    SearchSummaryActivityStatusesRequest:
-      description: Schema for searching summary activity statuses
+        applicationStatuses:
+          $ref: "#/components/schemas/SummaryApplicationStatuses"
+    SearchSummaryApplicationStatusesRequest:
+      description: Schema for searching summary application statuses
       type: object
       properties:
         policyNumber:
           type: string
+          minLength: 1
+          maxLength: 30
         associatedFirmId:
           type: string
+          minLength: 1
+          maxLength: 65
         cusip:
           type: string
+          minLength: 9
+          maxLength: 9
+          pattern: (^[a-zA-Z0-9](9)$)
         producerNumber:
           type: string
+          maxLength: 30
         npn: 
           type: string
+          maxLength: 10
         crdNumber:
           type: string
+          maxLength: 10
         partyTaxId:
           type: string
+          maxLength: 9
         applicationOriginId:
           type: string
         trackingNumber:
           type: string
+          minLength: 1
+          maxLength: 65
       additionalProperties: false
