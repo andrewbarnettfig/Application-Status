@@ -996,11 +996,6 @@ components:
       allOf:
         - $ref: '#/components/schemas/PolicySummary'
         - type: object
-          properties:
-            producers:
-              $ref: "#/components/schemas/Producers"
-            parties:
-              $ref: "#/components/schemas/Parties"
     SummaryApplicationStatuses:
       description: Schema for application statuses
       type: array
