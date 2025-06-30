@@ -978,10 +978,6 @@ components:
         - $ref: '#/components/schemas/Policy'
         - type: object
           properties:
-            producers:
-              $ref: "#/components/schemas/Producers"
-            parties:
-              $ref: "#/components/schemas/Parties"
             canSellValidations:
               $ref: "#/components/schemas/CanSellValidation"
             documentReviews:
@@ -993,16 +989,12 @@ components:
     SummaryApplicationStatus:
       description: Schema for summary application status
       type: object
-      allOf:
         - $ref: '#/components/schemas/PolicySummary'
-        - type: object
     SummaryApplicationStatuses:
       description: Schema for application statuses
       type: array
       items:
-        allOf:
-          - $ref: '#/components/schemas/SummaryApplicationStatus'
-          - type: object
+        - $ref: '#/components/schemas/SummaryApplicationStatus'
     SummaryApplicationStatusesPagedResult:
       description: Schema for the paged result of application statuses
       type: object
