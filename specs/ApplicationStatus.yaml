@@ -978,15 +978,11 @@ components:
               $ref: "#/components/schemas/Suitability"
             fundings:
               $ref: "#/components/schemas/Funding"
-    SummaryApplicationStatus:
-      description: Schema for summary application status
-      type: object
-        - $ref: '#/components/schemas/PolicySummary'
     SummaryApplicationStatuses:
       description: Schema for application statuses
       type: array
       items:
-        - $ref: '#/components/schemas/SummaryApplicationStatus'
+        - $ref: '#/components/schemas/PolicySummary'
     SummaryApplicationStatusesPagedResult:
       description: Schema for the paged result of application statuses
       type: object
