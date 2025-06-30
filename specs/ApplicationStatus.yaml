@@ -333,7 +333,7 @@ components:
         pattern: (^[a-zA-Z0-9](9)$)
     producerNumber:
       name: producerNumber
-      description: Optional query parameger for the carrier assigned unique identifier.
+      description: Optional query parameter for the carrier assigned unique identifier.
       in: query
       required: false
       schema:
