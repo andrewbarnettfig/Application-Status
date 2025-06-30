@@ -1,7 +1,7 @@
 openapi: 3.1.0
 info:
-  title: Insurance Policy Application Status APIs
-  description: APIs for managing insurance policy application data including application status, details, transmission, agents, parties, funding, documents, and more.
+  title: Annuity Application Status APIs
+  description: APIs for managing Annuity application data including application status, details, transmission, agents, parties, funding, documents, and more.
   version: 1.0.0
   license:
     name: MIT
@@ -49,7 +49,6 @@ paths:
         - $ref: '#/components/parameters/senderParticipantId'
         - $ref: '#/components/parameters/receiverParticipantId'
         - $ref: '#/components/parameters/brokerNumber'
-        - $ref: '#/components/parameters/policyNumber'
         - $ref: '#/components/parameters/associatedFirmId'
         - $ref: '#/components/parameters/cusip'
         - $ref: '#/components/parameters/producerNumber'
@@ -74,8 +73,8 @@ paths:
   /v1/application-statuses/{policyNumber}:
     get:
       operationId: getApplicationStatusByPolicyNumber
-      summary: Retrieve a detail application status
-      description: Retrieve a detail application status.
+      summary: Retrieve application status
+      description: Retrieve application status for a policy with complete status details.
       tags:
         - Application Status
       parameters:
@@ -83,7 +82,7 @@ paths:
         - $ref: '#/components/parameters/senderParticipantId'
         - $ref: '#/components/parameters/receiverParticipantId'
         - $ref: '#/components/parameters/brokerNumber'
-        - $ref: '#/components/parameters/policyNumberRequired'
+        - $ref: '#/components/parameters/policyNumber'
         - $ref: '#/components/parameters/associatedFirmId'
       responses:
         "200":
@@ -110,7 +109,6 @@ paths:
         - $ref: '#/components/parameters/senderParticipantId'
         - $ref: '#/components/parameters/receiverParticipantId'
         - $ref: '#/components/parameters/brokerNumber'
-        - $ref: '#/components/parameters/policyNumber'
         - $ref: '#/components/parameters/associatedFirmId'
         - $ref: '#/components/parameters/cusip'
         - $ref: '#/components/parameters/producerNumber'
@@ -138,7 +136,7 @@ paths:
     get:
       operationId: getPolicyByPolicyNumber
       summary: Retrieve a policy
-      description: Retrieve primary data of a policy.
+      description: Retrieve summary application-status of a policy without the details of the statuses of each activity associated with the application
       tags:
         - Policy
       parameters:
@@ -146,7 +144,7 @@ paths:
         - $ref: '#/components/parameters/senderParticipantId'
         - $ref: '#/components/parameters/receiverParticipantId'
         - $ref: '#/components/parameters/brokerNumber'
-        - $ref: '#/components/parameters/policyNumberRequired'
+        - $ref: '#/components/parameters/policyNumber'
         - $ref: '#/components/parameters/associatedFirmId'
       responses:
         "200":
@@ -173,7 +171,7 @@ paths:
         - $ref: '#/components/parameters/senderParticipantId'
         - $ref: '#/components/parameters/receiverParticipantId'
         - $ref: '#/components/parameters/brokerNumber'
-        - $ref: '#/components/parameters/policyNumberRequired'
+        - $ref: '#/components/parameters/policyNumber'
         - $ref: '#/components/parameters/associatedFirmId'
       responses:
         "200":
@@ -200,7 +198,7 @@ paths:
         - $ref: '#/components/parameters/senderParticipantId'
         - $ref: '#/components/parameters/receiverParticipantId'
         - $ref: '#/components/parameters/brokerNumber'
-        - $ref: '#/components/parameters/policyNumberRequired'
+        - $ref: '#/components/parameters/policyNumber'
         - $ref: '#/components/parameters/associatedFirmId'
       responses:
         "200":
@@ -227,7 +225,7 @@ paths:
         - $ref: '#/components/parameters/senderParticipantId'
         - $ref: '#/components/parameters/receiverParticipantId'
         - $ref: '#/components/parameters/brokerNumber'
-        - $ref: '#/components/parameters/policyNumberRequired'
+        - $ref: '#/components/parameters/policyNumber'
         - $ref: '#/components/parameters/associatedFirmId'
       responses:
         "200":
@@ -254,7 +252,7 @@ paths:
         - $ref: '#/components/parameters/senderParticipantId'
         - $ref: '#/components/parameters/receiverParticipantId'
         - $ref: '#/components/parameters/brokerNumber'
-        - $ref: '#/components/parameters/policyNumberRequired'
+        - $ref: '#/components/parameters/policyNumber'
         - $ref: '#/components/parameters/associatedFirmId'
       responses:
         "200":
@@ -305,17 +303,11 @@ components:
       required: false
       schema:
         type: string
-    policyNumberRequired:
-      name: policyNumber
-      description: Required query parameter for the policy number to be retrieved
-      in: query
-      required: false
-      schema:
-        type: string
     policyNumber:
       name: policyNumber
-      in: query
-      required: false
+      description: Required path parameter for the policy number to be retrieved
+      in: path
+      required: true
       schema:
         type: string
         minLength: 1
@@ -341,7 +333,7 @@ components:
         pattern: (^[a-zA-Z0-9](9)$)
     producerNumber:
       name: producerNumber
-      description: Optional query parameter for the producer number
+      description: Optional query parameger for the carrier assigned unique identifier.
       in: query
       required: false
       schema:
@@ -349,7 +341,7 @@ components:
         maxLength: 30
     npn:
       name: npn
-      description: Optional query parameter for the NPN
+      description: Optional query parameter for the National Producer Number
       in: query
       required: false
       schema:
@@ -357,7 +349,7 @@ components:
         maxLength: 10
     crdNumber:
       name: crdNumber
-      description: Optional query parameter for the CRD number
+      description: Optional query parameter for the Central Registration Depository number
       in: query
       required: false
       schema:
