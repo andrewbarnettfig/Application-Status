@@ -2,6 +2,4 @@
 
 IRI's Application Status API standards
 
-
-# DISCLAIMER: THIS IS STILL A WORK IN PROGRESS WITH THE TECHNICAL COMMITTEE, NOT A FINALIZED VERSION
-Working copy definition can be found at /specs/ApplicationStatus.yaml
+Definition can be found at [/specs/ApplicationStatus.yaml](https://github.com/Insured-Retirement-Institute/Application-Status/blob/main/specs/ApplicationStatus.yaml) as well as the [GitHub Page](https://insured-retirement-institute.github.io/Style-Guide/) of the Style Guide repoistory.
