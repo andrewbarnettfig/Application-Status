@@ -619,6 +619,9 @@ components:
         dueDate:
           type: string
           format: date
+        isApproved:
+          description: If status is completed, this field denotes whether suitability was approved or declined
+          type: boolean
     DocumentReview:
       description: Schema for policy document review data
       type: object
@@ -773,6 +776,9 @@ components:
                     type: string
                     minLength: 1
                     maxLength: 2000
+                  methodOfInitiation:
+                    type: string
+                    enum: [fax, email, mail, replacement]
 
     PolicySummary:
       description: Schema for policy summary data
