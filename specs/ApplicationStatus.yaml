@@ -2,12 +2,12 @@ openapi: 3.1.0
 info:
   title: Annuity Application Status APIs
   description: APIs for managing Annuity application data including application status, details, transmission, agents, parties, funding, documents, and more.
-  version: 1.0.0
+  version: 2.0.0
   license:
     name: MIT
     url: https://github.com/Insured-Retirement-Institute/Pending-Case/blob/main/LICENSE
 paths:
-  /v1/application-statuses/searches:
+  /v2/application-statuses/searches:
     post:
       operationId: postApplicationStatusSearch
       summary: Search for summary application statuses
@@ -37,7 +37,7 @@ paths:
                 $ref: "#/components/schemas/SummaryApplicationStatusesPagedResult"
         "401":
           description: Unauthorized
-  /v1/application-statuses:
+  /v2/application-statuses:
     get:
       operationId: getApplicationStatuses
       summary: Retrieve summary application statuses 
@@ -71,7 +71,7 @@ paths:
                 $ref: "#/components/schemas/SummaryApplicationStatusesPagedResult"
         "401":
           description: Unauthorized
-  /v1/application-statuses/{policyNumber}:
+  /v2/application-statuses/{policyNumber}:
     get:
       operationId: getApplicationStatusByPolicyNumber
       summary: Retrieve application status
@@ -98,7 +98,7 @@ paths:
           description: Forbidden
         "404":
           description: NotFound
-  /v1/application-statuses/policies:
+  /v2/application-statuses/policies:
     get:
       operationId: getPolicies
       summary: Retrieve policies
@@ -134,7 +134,7 @@ paths:
           description: Unauthorized
         "403":
           description: Forbidden
-  /v1/application-statuses/policies/{policyNumber}:
+  /v2/application-statuses/policies/{policyNumber}:
     get:
       operationId: getPolicyByPolicyNumber
       summary: Retrieve a policy
@@ -161,7 +161,7 @@ paths:
           description: Forbidden
         "404":
           description: NotFound
-  /v1/application-statuses/policies/{policyNumber}/fundings:
+  /v2/application-statuses/policies/{policyNumber}/fundings:
     get:
       operationId: getFundingStatusByPolicyNumber
       summary: Retrieve policy funding data
@@ -188,7 +188,7 @@ paths:
           description: Forbidden
         "404":
           description: NotFound
-  /v1/application-statuses/policies/{policyNumber}/document-reviews:
+  /v2/application-statuses/policies/{policyNumber}/document-reviews:
     get:
       operationId: getDocumentReviewStatusByPolicyNumber
       summary: Retrieve policy document review data
@@ -215,7 +215,7 @@ paths:
           description: Forbidden
         "404":
           description: NotFound
-  /v1/application-statuses/policies/{policyNumber}/suitability:
+  /v2/application-statuses/policies/{policyNumber}/suitability:
     get:
       operationId: getSuitabilityInformationByPolicyNumber
       summary: Retrieve policy suitability data
@@ -242,7 +242,7 @@ paths:
           description: Forbidden
         "404":
           description: NotFound
-  /v1/application-statuses/policies/{policyNumber}/can-sell-validations:
+  /v2/application-statuses/policies/{policyNumber}/can-sell-validations:
     get:
       operationId: getCanSellValidationByPolicyNumber
       summary: Retrieve policy can sell validation data
