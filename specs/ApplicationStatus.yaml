@@ -417,6 +417,8 @@ components:
         format: date
         minimum: 10
         maximum: 10
+        examples: 
+          - "2025-01-01"
     statusEndDate:
       name: statusEndDate
       description: Latest status date, inclusive
@@ -427,6 +429,8 @@ components:
         format: date
         minimum: 10
         maximum: 10
+        examples: 
+          - "2025-01-01"
   schemas:
     IndividualIdentity:
       description: Schema for individual identity data
@@ -1064,9 +1068,13 @@ components:
           format: date
           minLength: 10
           maxLength: 10
+          examples: 
+            - "2025-01-01"
         statusEndDate:
           type: string
           format: date
           minLength: 10
           maxLength: 10
+          examples: 
+            - "2025-01-01"
       additionalProperties: false
