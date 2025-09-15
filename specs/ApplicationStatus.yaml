@@ -528,6 +528,7 @@ components:
                   - brokerageGeneralAgency
                   - registeredInvestmentAdvisoryFirm
                   - independentMarketingOrganization
+                  - brokerDealer
     EntityParty:
       description: Schema for entity party data
       type: object
