@@ -19,6 +19,7 @@ paths:
         - $ref: '#/components/parameters/senderParticipantId'
         - $ref: '#/components/parameters/receiverParticipantId'
         - $ref: '#/components/parameters/brokerNumber'
+        - $ref: '#/components/parameters/finishedCutoffDays'
         - $ref: '#/components/parameters/orderBy'
         - $ref: '#/components/parameters/sortOrder'
         - $ref: '#/components/parameters/start'
@@ -56,8 +57,7 @@ paths:
         - $ref: '#/components/parameters/crdNumber'
         - $ref: '#/components/parameters/applicationOriginId'
         - $ref: '#/components/parameters/trackingNumber'
-        - $ref: '#/components/parameters/statusStartDate'
-        - $ref: '#/components/parameters/statusEndDate'
+        - $ref: '#/components/parameters/finishedCutoffDays'
         - $ref: '#/components/parameters/orderBy'
         - $ref: '#/components/parameters/sortOrder'
         - $ref: '#/components/parameters/start'
@@ -117,8 +117,7 @@ paths:
         - $ref: '#/components/parameters/crdNumber'
         - $ref: '#/components/parameters/applicationOriginId'
         - $ref: '#/components/parameters/trackingNumber'
-        - $ref: '#/components/parameters/statusStartDate'
-        - $ref: '#/components/parameters/statusEndDate'
+        - $ref: '#/components/parameters/finishedCutoffDays'
         - $ref: '#/components/parameters/orderBy'
         - $ref: '#/components/parameters/sortOrder'
         - $ref: '#/components/parameters/start'
@@ -371,6 +370,14 @@ components:
       required: false
       schema:
         type: string
+    finishedCutoffDays:
+      name: finishedCutoffDays
+      description: Optional query parameter for when a completed or cancelled policy is to drop off
+      in: query
+      required: false
+      schema:
+        type: integer
+        default: 7
     orderBy:
       name: orderBy
       description: Order by for pagination
@@ -407,30 +414,6 @@ components:
         default: 100
         minimum: 1
         maximum: 1000
-    statusStartDate:
-      name: statusStartDate
-      description: Earliest status date, inclusive
-      in: query
-      required: false
-      schema:
-        type: string
-        format: date
-        minimum: 10
-        maximum: 10
-        examples: 
-          - "2025-01-01"
-    statusEndDate:
-      name: statusEndDate
-      description: Latest status date, inclusive
-      in: query
-      required: false
-      schema:
-        type: string
-        format: date
-        minimum: 10
-        maximum: 10
-        examples: 
-          - "2025-01-01"
   schemas:
     IndividualIdentity:
       description: Schema for individual identity data
@@ -1064,18 +1047,7 @@ components:
           type: string
           minLength: 1
           maxLength: 65
-        statusStartDate:
-          type: string
-          format: date
-          minLength: 10
-          maxLength: 10
-          examples: 
-            - "2025-01-01"
-        statusEndDate:
-          type: string
-          format: date
-          minLength: 10
-          maxLength: 10
-          examples: 
-            - "2025-01-01"
+        finishedCutoffDays:
+          type: integer
+          default: 7
       additionalProperties: false
