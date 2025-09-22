@@ -795,7 +795,7 @@ components:
     PolicySummary:
       description: Schema for policy summary data
       type: object
-      required: [policyNumber,applicationOrigin,cusip,status,statusDate,isActionNeeded,signedDate]
+      required: [policyNumber,applicationOrigin,cusip,status,statusDate]
       properties:
         policyNumber:
           type: string
