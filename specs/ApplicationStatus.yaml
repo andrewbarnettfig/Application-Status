@@ -16,8 +16,6 @@ paths:
         - Application Status
       parameters:
         - $ref: '#/components/parameters/correlationId'
-        - $ref: '#/components/parameters/senderParticipantId'
-        - $ref: '#/components/parameters/receiverParticipantId'
         - $ref: '#/components/parameters/brokerNumber'
         - $ref: '#/components/parameters/finishedCutoffDays'
         - $ref: '#/components/parameters/orderBy'
@@ -47,8 +45,6 @@ paths:
         - Application Status
       parameters:
         - $ref: '#/components/parameters/correlationId'
-        - $ref: '#/components/parameters/senderParticipantId'
-        - $ref: '#/components/parameters/receiverParticipantId'
         - $ref: '#/components/parameters/brokerNumber'
         - $ref: '#/components/parameters/associatedFirmId'
         - $ref: '#/components/parameters/cusip'
@@ -80,8 +76,6 @@ paths:
         - Application Status
       parameters:
         - $ref: '#/components/parameters/correlationId'
-        - $ref: '#/components/parameters/senderParticipantId'
-        - $ref: '#/components/parameters/receiverParticipantId'
         - $ref: '#/components/parameters/brokerNumber'
         - $ref: '#/components/parameters/policyNumber'
         - $ref: '#/components/parameters/associatedFirmId'
@@ -107,8 +101,6 @@ paths:
         - Policy
       parameters:
         - $ref: '#/components/parameters/correlationId'
-        - $ref: '#/components/parameters/senderParticipantId'
-        - $ref: '#/components/parameters/receiverParticipantId'
         - $ref: '#/components/parameters/brokerNumber'
         - $ref: '#/components/parameters/associatedFirmId'
         - $ref: '#/components/parameters/cusip'
@@ -142,8 +134,6 @@ paths:
         - Policy
       parameters:
         - $ref: '#/components/parameters/correlationId'
-        - $ref: '#/components/parameters/senderParticipantId'
-        - $ref: '#/components/parameters/receiverParticipantId'
         - $ref: '#/components/parameters/brokerNumber'
         - $ref: '#/components/parameters/policyNumber'
         - $ref: '#/components/parameters/associatedFirmId'
@@ -169,8 +159,6 @@ paths:
         - Policy
       parameters:
         - $ref: '#/components/parameters/correlationId'
-        - $ref: '#/components/parameters/senderParticipantId'
-        - $ref: '#/components/parameters/receiverParticipantId'
         - $ref: '#/components/parameters/brokerNumber'
         - $ref: '#/components/parameters/policyNumber'
         - $ref: '#/components/parameters/associatedFirmId'
@@ -196,8 +184,6 @@ paths:
         - Policy
       parameters:
         - $ref: '#/components/parameters/correlationId'
-        - $ref: '#/components/parameters/senderParticipantId'
-        - $ref: '#/components/parameters/receiverParticipantId'
         - $ref: '#/components/parameters/brokerNumber'
         - $ref: '#/components/parameters/policyNumber'
         - $ref: '#/components/parameters/associatedFirmId'
@@ -223,8 +209,6 @@ paths:
         - Policy
       parameters:
         - $ref: '#/components/parameters/correlationId'
-        - $ref: '#/components/parameters/senderParticipantId'
-        - $ref: '#/components/parameters/receiverParticipantId'
         - $ref: '#/components/parameters/brokerNumber'
         - $ref: '#/components/parameters/policyNumber'
         - $ref: '#/components/parameters/associatedFirmId'
@@ -250,8 +234,6 @@ paths:
         - Policy
       parameters:
         - $ref: '#/components/parameters/correlationId'
-        - $ref: '#/components/parameters/senderParticipantId'
-        - $ref: '#/components/parameters/receiverParticipantId'
         - $ref: '#/components/parameters/brokerNumber'
         - $ref: '#/components/parameters/policyNumber'
         - $ref: '#/components/parameters/associatedFirmId'
@@ -277,26 +259,6 @@ components:
       required: false
       schema:
         type: string
-    senderParticipantId:
-      name: senderParticipantId
-      description: Optional custom header identifying the sender of the call
-      in: header
-      required: false
-      schema:
-        type: string
-        minLength: 8
-        maxLength: 8
-        pattern: (^[0-9]{8}$)(?<!^0+$)
-    receiverParticipantId:
-      name: receiverParticipantId
-      description: Optional custom header identifying the receiver of the call
-      in: header
-      required: false
-      schema:
-        type: string
-        minLength: 8
-        maxLength: 8
-        pattern: (^[0-9]{8}$)(?<!^0+$)
     brokerNumber:
       name: brokerNumber
       description: Optional custom header identifying the broker number of the call
