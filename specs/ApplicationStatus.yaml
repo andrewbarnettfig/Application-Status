@@ -913,45 +913,6 @@ components:
               type: string
               minLength: 1
               maxLength: 2000
-        delivery:
-          type: object
-          properties:
-            sentDate:
-              type: string
-              format: date
-            method:
-              type: string
-              enum:
-                - fedex
-                - ups
-                - electronicDelivery
-                - handDelivery
-                - usps
-            trackingNumber:
-              type: string
-              minLength: 1
-              maxLength: 65
-        caseManager:
-          type: object
-          required: [fullName, phoneNumber]
-          properties:
-            fullName:
-              type: string
-              minLength: 1
-              maxLength: 180
-              pattern:  ^[a-zA-Z0-9=()=*@#\\s.,'_/~%$!();:&amp;&quot;+&#x00ae;®`\\-\\\\?\"=]{1,180}
-            phoneNumber:
-              type: string
-              minLength: 10
-              maxLength: 15
-            emailAddress:
-              type: string
-            websiteURL:
-              type: string        
-        producers:
-          $ref: "#/components/schemas/Producers"
-        parties:
-          $ref: "#/components/schemas/Parties"
     Policies:
       description: Schema for policies
       type: array
